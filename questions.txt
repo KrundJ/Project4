@@ -1,0 +1,20 @@
+
+Create separate service for horses
+
+Inject Service in  command(for unit testing)
+
+String literals for fields values in constants
+
+Break long methods in smaller(organize race validation need to break) 
+
+СМ ПЕРВУЮ ЗАКЛАДКУ С БРАУЗЕРЕ РОЛЛБЕК
+
+remove system.out everywhere
+
+
+
+
+
+
+
+
