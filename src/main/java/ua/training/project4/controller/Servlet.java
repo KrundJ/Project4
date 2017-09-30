@@ -68,11 +68,11 @@ public class Servlet extends HttpServlet {
 	   			new SetRaceResults("/app/administrator", REDIRECT, "/WEB-INF/jsp/race_results_editor.jsp", FORWARD));
 	   	//BOOKMAKER
 	   	commands.put("GET:/bookmaker", 
-	   			new ShowBookmakerControlls("/bookmaker_main.jsp", FORWARD));
+	   			new ShowBookmakerControlls("/WEB-INF/jsp/bookmaker_main.jsp", FORWARD));
 	 	commands.put("GET:/bookmaker/edit", 
-	   			new ShowCoefficientsEditor("/coefficients_editor.jsp", FORWARD));
+	   			new ShowCoefficientsEditor("/WEB-INF/jsp/coefficients_editor.jsp", FORWARD));
 	 	commands.put("POST:/bookmaker/edit", 
-	   			new SetOrEditCoefficients("/app/bookmaker", REDIRECT, "/coefficients_editor.jsp", FORWARD));
+	   			new SetOrEditCoefficients("/app/bookmaker", REDIRECT, "/WEB-INF/jsp/coefficients_editor.jsp", FORWARD));
 //	   	commands.put("GET:/login",  new Login());
 	}
 	

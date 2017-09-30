@@ -11,70 +11,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Coefficients</title>
-<style>
-		.container{	
-			overflow-y: hidden;
-			width: 100%;
-			
-			border: solid;
-			border-color: black;
-		}
-
-		.topDiv{	
-			height:150px;
-			padding: 0 0;
-			margin: 0 0;
-			z-index: 1;
-			line-height: 30px;
-			
-			border: solid;
-			border-color: yellow;
-		}
-		
-		.topBar{
-			width: 280px;
-			height: 100%;
-		}
-
-		.topBar.left{
-			text-align: left;
-			float: left;  
-			
-			border: solid;
-			border-color: green;
-		}
-
-		.topBar.right{
-			text-align: right;
-			float: right;
-	
-			border: solid;
-			border-color: red;
-		}
-		
-		.content {	
-			float: top;
-			margin: 0 auto;
-			height: 100%;
-			width: 90%;
-			text-align: center;
-			overflow: auto;
-			
-			border: solid;
-			border-color: pink;
-			
-		}
-		
-		.tableCenter {
-		 	display: inline-block;
-		}
-		
-		span {
-			font-weight: 600;
-			font-size: 12px;
-			color: red; 
-		}
-	</style>
+<link rel="stylesheet" type="text/css" href="/stylesheet.css">
 </head>
 <body>
 	<%

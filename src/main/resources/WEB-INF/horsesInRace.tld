@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+ 
+    <tlib-version>1.0</tlib-version>
+    <short-name>horsesInRace</short-name>
+    <uri>project4</uri>
+    <tag>
+        <name>horsesInRace</name>
+        <tag-class>ua.training.project4.view.HorsesInRace</tag-class>
+        <body-content>empty</body-content>
+        Race raceToEdit
+        <attribute>
+            <name>allHorses</name>
+            <rtexprvalue>true</rtexprvalue>
+            <required>true</required>
+            <type>java.util.Set</type>
+        </attribute>
+
+        <attribute>
+            <name>raceToEdit</name>
+            <rtexprvalue>true</rtexprvalue>
+            <required>true</required>
+            <type>ua.training.project4.model.entities.Race</type>
+        </attribute>
+    </tag>
+ 
+</taglib>
