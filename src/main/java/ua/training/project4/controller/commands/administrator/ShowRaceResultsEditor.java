@@ -15,8 +15,8 @@ public class ShowRaceResultsEditor extends Command {
 	
 	AdministratorService administratorService = AdministratorService.getInstance();
 	
-	public ShowRaceResultsEditor(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public ShowRaceResultsEditor(String successPage) {
+		super(successPage);
 	}
 	
 	@Override

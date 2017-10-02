@@ -13,8 +13,8 @@ public class StartRace extends Command {
 	
 	AdministratorService administratorService = AdministratorService.getInstance();
 
-	public StartRace(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public StartRace(String successPage) {
+		super(successPage);
 	}
 
 	@Override
@@ -25,5 +25,7 @@ public class StartRace extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> validValues) {
 		administratorService.startRace((int) validValues.get("raceID"));
+		//Set status code for redirect
+		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
 }

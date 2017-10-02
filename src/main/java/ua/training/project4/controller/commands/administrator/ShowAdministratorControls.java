@@ -12,8 +12,8 @@ public class ShowAdministratorControls extends Command {
 	
 	AdministratorService administratorService = AdministratorService.getInstance();
 
-	public ShowAdministratorControls(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public ShowAdministratorControls(String successPage) {
+		super(successPage);
 	}
 
 	@Override

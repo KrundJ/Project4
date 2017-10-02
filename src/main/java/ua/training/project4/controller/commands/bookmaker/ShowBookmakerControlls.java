@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.commands.Command;
-import ua.training.project4.controller.commands.Command.ChangePageType;
 import ua.training.project4.model.service.AdministratorService;
 import ua.training.project4.model.service.BookmakerService;
 
@@ -14,8 +13,8 @@ public class ShowBookmakerControlls extends Command {
 	AdministratorService administratorService = AdministratorService.getInstance();
 	BookmakerService bookmakerService = BookmakerService.getInstance();
 
-	public ShowBookmakerControlls(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public ShowBookmakerControlls(String successPage) {
+		super(successPage);
 	}
 	
 

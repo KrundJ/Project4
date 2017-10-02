@@ -13,8 +13,8 @@ public class DeleteRace extends Command {
 
 	AdministratorService service = AdministratorService.getInstance();
 	
-	public DeleteRace(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public DeleteRace(String successPage) {
+		super(successPage);
 	}
 
 	@Override
@@ -25,5 +25,7 @@ public class DeleteRace extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> validValues) {
 		service.deletePlannedRace((int) validValues.get("raceID"));
+		//Set status code for redirect
+		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
 }

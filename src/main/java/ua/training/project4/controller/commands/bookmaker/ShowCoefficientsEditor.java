@@ -13,8 +13,8 @@ public class ShowCoefficientsEditor extends Command {
 	
 	BookmakerService bookmakerService = BookmakerService.getInstance();
 
-	public ShowCoefficientsEditor(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public ShowCoefficientsEditor(String successPage) {
+		super(successPage);
 	}
 	
 	@Override

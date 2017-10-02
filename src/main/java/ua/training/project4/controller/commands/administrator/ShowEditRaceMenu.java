@@ -18,8 +18,8 @@ public class ShowEditRaceMenu extends Command {
 	AdministratorService administratorService = AdministratorService.getInstance();
 	HorseService horseService = HorseService.getInstance();
 	
-	public ShowEditRaceMenu(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public ShowEditRaceMenu(String successPage) {
+		super(successPage);
 	}
 	
 	@Override

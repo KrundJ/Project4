@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -38,18 +39,26 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			+ "ON horses.h_name = horses_races.h_name LEFT JOIN jockeys "
 			+ "ON horses.h_jockey = jockeys.j_id "
 			+ "ORDER BY horses_races.r_id";
+	
+	private static final String GET_FOR_CURRENT_RACES = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
+			+ "FROM horses JOIN horses_races "      
+			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "
+            + "ON horses_races.r_id = races.r_id LEFT JOIN jockeys " 
+			+ "ON horses.h_jockey = jockeys.j_id " 
+            + "WHERE races.r_state = 'FINISHED' "
+			+ "ORDER BY horses_races.r_id";
        
 	private static final String UPDATE = "UPDATE horses_races " 
 			+ "SET horses_races.h_coefficient = ? "
 			+ "WHERE horses_races.r_id = ? AND horses_races.h_name = ?";
-	
+			
 	public CoefficientsDAOImpl(BasicDataSource connectionPool) {
 		this.connectionPool = connectionPool;
 	}
 			
 	@Override
 	public Coefficients getByRaceID(int raceID) {
-		Coefficients result = Coefficients.builder().build();
+		Coefficients result = new Coefficients();
 		try (Connection conn = connectionPool.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(GET_BY_RACE_ID);
 			ps.setInt(1, raceID);
@@ -60,10 +69,10 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
             	if (rs.isFirst()) {
 					result.setRaceID(rs.getInt("r_id"));
 				}
-	            horse = new Horse();
-	            horse.setName(rs.getString("h_name"));
-	            horse.setNumber(rs.getInt("h_number"));
-	            horse.setJockey(rs.getString("j_name"));
+	            horse = Horse.builder()
+	            .name(rs.getString("h_name"))
+	            .number(rs.getInt("h_number"))
+	            .jockey(rs.getString("j_name")).build();
 	            values.put(horse, rs.getDouble("h_coefficient"));
             }
             result.setValues(values);
@@ -74,36 +83,32 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
         } 
 		return result;
 	}
-
-	@Override
-	public List<Coefficients> getCoefficientsForAllRaces() {
+	
+	
+	private List<Coefficients> getListOfCoefficients(String query) {
 		List<Coefficients> result = new LinkedList<>();
 		try (Connection conn = connectionPool.getConnection()) {
 			Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(GET_FOR_ALL_RACES);
+            ResultSet rs = st.executeQuery(query);
             Horse horse = null;
             Coefficients coef = null;
             while (rs.next()) {	
 
-				if (coef != null && rs.getInt("r_id") != coef.getRaceID()) coef = null;
-				
-				if (coef == null) { 
-					coef = Coefficients.builder().build();
-					coef.setValues(new HashMap<>());
-					coef.setRaceID(rs.getInt("r_id"));
+				if (Objects.nonNull(coef) && rs.getInt("r_id") != coef.getRaceID()) { 
+					coef = null;
+				}
+	
+				if (Objects.isNull(coef)) { 
+					coef = Coefficients.builder()
+					.values(new HashMap<>())
+					.raceID(rs.getInt("r_id")).build();
 					result.add(coef);
-//					race.setID(rs.getInt("r_id"));
-//					race.setDistance(RaceDistance.valueOf(rs.getString("r_distance")));
-//					race.setState(RaceState.valueOf(rs.getString("r_state")));
-//					race.setDate(rs.getDate("r_date"));
-//					race.setRaceResults(raceResults);
-//					races.add(race);
 				}
 				
-				horse = new Horse();
-				horse.setName(rs.getString("h_name"));
-				horse.setNumber(rs.getInt("h_number"));
-				horse.setJockey(rs.getString("j_name"));
+				horse = Horse.builder()
+				.name(rs.getString("h_name"))
+				.number(rs.getInt("h_number"))
+				.jockey(rs.getString("j_name")).build();
 				coef.getValues().put(horse, rs.getDouble("h_coefficient"));
 			}
         } catch (SQLException ex){
@@ -115,8 +120,19 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 	}
 
 	@Override
+	public List<Coefficients> getCoefficientsForAllRaces() {
+		return getListOfCoefficients(GET_FOR_ALL_RACES);
+	}
+	
+	@Override
+	public List<Coefficients> getCoefficientsForCurrentRaces() {
+		return getListOfCoefficients(GET_FOR_CURRENT_RACES);
+	}
+
+	@Override
 	public void setCoefficients(Coefficients coef) {
-		try (Connection conn = connectionPool.getConnection()) {
+		try (Connection conn = connectionPool.getConnection();
+				AutoCloseable endBlock = conn::rollback) {
 			conn.setAutoCommit(false);		
 			PreparedStatement st = conn.prepareStatement(UPDATE);
 			st.setInt(2, coef.getRaceID());
@@ -128,7 +144,7 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			st.executeBatch();
 			conn.commit();
 			conn.setAutoCommit(true);			
-        } catch (SQLException ex){
+        } catch (Exception ex){
         	ex.printStackTrace();
         	//!!!!
         	throw new RuntimeException();

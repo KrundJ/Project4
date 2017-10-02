@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,45 +20,57 @@ public class HorseDAOImpl implements HorseDAO {
 			
 	private static final String FIND_HORSES_BY_NAMES = "SELECT h_name, h_number, j_name FROM horses JOIN jockeys "
 			+ "ON horses.h_jockey = jockeys.j_id "
-			+ "WHERE horses.h_name IN (?, ?, ?, ?, ?)";
-
+			+ "WHERE horses.h_name IN "; //Names added in method
+	
 	private static final String FIND_ALL_HORSES = "SELECT h_name, h_number, j_name FROM horses JOIN"
 			+ " jockeys ON horses.h_jockey = jockeys.j_id";
+	
+	public static final String NAME_FIELD = "h_name";
+	public static final String NUMBER_FIELD = "h_number";
+	public static final String JOCKEY_FIELD = "j_name";
 			
 	public HorseDAOImpl(BasicDataSource connectionPool) {
 		this.connectionPool = connectionPool;
+	}
+	
+	public Horse extractHorseFromResultSet(ResultSet rs) throws SQLException {
+		return  Horse.builder()
+	            .name(rs.getString(NAME_FIELD))
+	            .number(rs.getInt(NUMBER_FIELD))
+	            .jockey(rs.getString(JOCKEY_FIELD)).build();
+	}
+	
+	private Set<Horse> queryForHorses() {
+		return null;
 	}
 		
 	@Override
 	public Set<Horse> getHorsesByNames(String... names) {
 		Set<Horse> horses = new HashSet<>();
 		try (Connection conn = connectionPool.getConnection()) {
-			PreparedStatement st = conn
-	                .prepareStatement(FIND_HORSES_BY_NAMES);
-			String name;
+			StringBuilder sb = new StringBuilder();
+			sb.append("(");
 			for (int i = 0; i < names.length; i++) {
-				try {
-					name = names[i];
-				} catch (Exception e) {
-					name = "";
-				}
-				 st.setString(i+1, name);
+				sb.append(names[i]);
+				if (! (i == names.length - 1))
+					sb.append(", ");
 			}
+			sb.append(")");
+
+			PreparedStatement st = conn.prepareStatement(FIND_HORSES_BY_NAMES + sb.toString());
+			for (int j = 0; j < names.length; j++) {
+				st.setString(j+1, names[j]);				
+			}
+			
 			ResultSet rs = st.executeQuery();
-            Horse horse;
             while(rs.next()){
-	            horse = new Horse();
-	            horse.setName(rs.getString("h_name"));
-	            horse.setNumber(rs.getInt("h_number"));
-	            horse.setJockey(rs.getString("j_name"));
-	            horses.add(horse);
+	            horses.add(extractHorseFromResultSet(rs));
             }
         } catch (SQLException ex){
         	ex.printStackTrace();
         	//!!!!
         	throw new RuntimeException();
         }
-		System.out.println("Horses size " + horses.size());
 		return horses;
 	}
 
@@ -67,21 +80,15 @@ public class HorseDAOImpl implements HorseDAO {
 		try (Connection conn = connectionPool.getConnection()) {
 			Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(FIND_ALL_HORSES);
-            Horse horse;
             while(rs.next()){	
-	            horse = new Horse();
-	            horse.setName(rs.getString("h_name"));
-	            horse.setNumber(rs.getInt("h_number"));
-	            horse.setJockey(rs.getString("j_name"));
-	            horses.add(horse);
+	            horses.add(extractHorseFromResultSet(rs));
             }
         } catch (SQLException ex){
         	ex.printStackTrace();
-        	//!!!!
+        	//To error page
         	throw new RuntimeException();
         } 
 		return horses;
 	}
-	
 }
 

@@ -13,8 +13,8 @@ public class FinishRace extends Command {
 	
 	AdministratorService administratorService = AdministratorService.getInstance();
 	
-	public FinishRace(String successPage, ChangePageType successType) {
-		super(successPage, successType);
+	public FinishRace(String successPage) {
+		super(successPage);
 	}
 	
 	@Override
@@ -27,6 +27,8 @@ public class FinishRace extends Command {
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		administratorService.finishRace((int) validValues.get("raceID"));
+		//Set status code for redirect
+		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
 
 }

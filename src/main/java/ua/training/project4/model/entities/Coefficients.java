@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Tolerate;
 
 @Getter
 @Setter
@@ -16,28 +17,10 @@ public class Coefficients {
 	private int raceID;
 	
 	private Map<Horse, Double> values;
-/*
-	public int getRaceID() {
-		return raceID;
-	}
-
-	public Map<Horse, Double> getValues() {
-		return values;
-	}
-
-	public void setRaceID(int raceID) {
-		this.raceID = raceID;
-	}
-
-	public void setValues(Map<Horse, Double> values) {
-		this.values = values;
-	}
-
-	@Override
-	public String toString() {
-		return "Coefficients [raceID=" + raceID + ", values=" + values + "]";
-	}	
-*/	
+	
+	@Tolerate
+	public Coefficients() {}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -1,35 +1,21 @@
 package ua.training.project4.model.entities;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@Builder
+@ToString
 public class Horse {
 	
 	private String name;
 	private int number;
 	private String jockey;
-				
-	public String getName() {
-		return name;
-	}
-
-	public int getNumber() {
-		return number;
-	}
-
-	public String getJockey() {
-		return jockey;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
-
-	public void setJockey(String jockey) {
-		this.jockey = jockey;
-	}
-	
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -53,11 +39,6 @@ public class Horse {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Horse [name=" + name + ", number=" + number + ", jockey=" + jockey + "]";
 	}
 }
 

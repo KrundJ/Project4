@@ -36,6 +36,10 @@ public class BookmakerService {
 		return daoFactory.getCoefficientsDAO().getCoefficientsForAllRaces();
 	}
 	
+	public List<Coefficients> getCoefficientsForCurrentRaces() {
+		return daoFactory.getCoefficientsDAO().getCoefficientsForCurrentRaces();
+	}
+	
 	public Coefficients getCoefficients(int raceID) {
 		return daoFactory.getCoefficientsDAO().getByRaceID(raceID);
 	}
@@ -61,15 +65,5 @@ public class BookmakerService {
 		Coefficients coef = createCoefficients(raceID, horseNameAndValue);
 		daoFactory.getCoefficientsDAO().setCoefficients(coef);
 	}
-	
-	/*
-	public int getWinnings(int betID) {
-		return 0;
-	}
-	
-	public void setUnbilled(int betID) {
-		
-	}
-	*/
 }
 

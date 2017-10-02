@@ -48,24 +48,34 @@
 				</tr>
 				<c:forEach items="${races}" var="race">
 					<tr>
-						<td><c:out value="${race.distance.getDistance()}"></c:out></td>
-						<td><c:forEach var="entry" items="${race.raceResults}">
+						<td>
+							${race.distance.getDistance()}
+						</td>
+						<td>
+							<c:forEach var="entry" items="${race.raceResults}">
 								<c:out value="${entry.key.name} - ${entry.key.jockey}"></c:out>
 								<br>
-							</c:forEach></td>
-						<td><c:forEach var="coef" items="${coefficients}">
+							</c:forEach>
+						</td>
+						<td>
+							<c:forEach var="coef" items="${coefficients}">
 								<c:if test="${coef.raceID eq race.ID}">
 									<c:set var="currentCoef" value="${coef}"></c:set>
 								</c:if>
-							</c:forEach> <c:forEach var="entry" items="${currentCoef.values}">
+							</c:forEach> 
+							<c:forEach var="entry" items="${currentCoef.values}">
 								<c:out value="${entry.value}"></c:out>
 								<br>
-							</c:forEach></td>
-						<td><c:out value="${race.state}"></c:out></td>
-						<td><c:out value="${race.date}"></c:out></td>
+							</c:forEach>
+						</td>
 						<td>
-							<button form="editForm" type="submit" name="raceID"
-								value="${race.ID}">Set or edit</button>
+							${race.state}
+						</td>
+						<td>
+							${race.date}
+						</td>
+						<td>
+							<button form="editForm" type="submit" name="raceID" value="${race.ID}">Set or edit</button>
 						</td>
 					</tr>
 				</c:forEach>

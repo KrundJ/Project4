@@ -9,6 +9,8 @@ public interface CoefficientsDAO {
 	public Coefficients getByRaceID(int raceID);
 	
 	public List<Coefficients> getCoefficientsForAllRaces();
+	
+	public List<Coefficients> getCoefficientsForCurrentRaces();
 
 	public void setCoefficients(Coefficients coef);
 }

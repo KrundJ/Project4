@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -51,6 +52,15 @@ public class RaceDAOImpl implements RaceDAO {
             + "ON horses.h_jockey = jockeys.j_id "
 			+ "ORDER BY races.r_id";
 	
+	private static final String GET_CURRENT_RACES = "SELECT horses.h_name, horses.h_number, horses_races.h_place, "
+			+ "races.r_id, races.r_distance, races.r_state, races.r_date, jockeys.j_name "   
+			+ "FROM horses JOIN horses_races "     
+			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "             
+			+ "ON horses_races.r_id = races.r_id LEFT JOIN jockeys "    
+            + "ON horses.h_jockey = jockeys.j_id "
+			+ "WHERE races.r_state = 'FINISHED' "
+			+ "ORDER BY races.r_id";
+	
 	private static final String UPDATE_RACE = "UPDATE races JOIN horses_races "
 			+ "ON races.r_id = horses_races.r_id  "
 			+ "SET races.r_distance = ?, races.r_state = ?, races.r_date = ?, horses_races.h_name = ?, horses_races.h_place = ? "
@@ -59,35 +69,34 @@ public class RaceDAOImpl implements RaceDAO {
 	public RaceDAOImpl(BasicDataSource connectionPool) {
 		this.connectionPool = connectionPool;
 	}
-			
-	@Override
-	public List<Race> getAllRaces() {
+		
+	private List<Race> getListOfRaces(String query) {
 		List<Race> races = new LinkedList<>();
 		try (Connection conn = connectionPool.getConnection()) {
 			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery(GET_ALL_RACES);
+			ResultSet rs = st.executeQuery(query);
 			Race race = null;
 			Horse horse = null;
-			Map<Horse, Integer> raceResults = null;
 			while (rs.next()) {	
 				
-				if (race != null && rs.getInt("r_id") != race.getID()) race = null;
-				
-				if (race == null) { 
-					race = new Race();
-					raceResults = new HashMap<>();
-					race.setID(rs.getInt("r_id"));
-					race.setDistance(RaceDistance.valueOf(rs.getString("r_distance")));
-					race.setState(RaceState.valueOf(rs.getString("r_state")));
-					race.setDate(rs.getDate("r_date"));
-					race.setRaceResults(raceResults);
-					races.add(race);
+				if (Objects.nonNull(race) && rs.getInt("r_id") != race.getID()) { 
+					race = null;
 				}
 				
-				horse = new Horse();
-				horse.setName(rs.getString("h_name"));
-				horse.setNumber(rs.getInt("h_number"));
-				horse.setJockey(rs.getString("j_name"));
+				if (Objects.isNull(race)) { 				
+					race = Race.builder()
+					.ID(rs.getInt("r_id"))
+					.distance(RaceDistance.valueOf(rs.getString("r_distance")))
+					.state(RaceState.valueOf(rs.getString("r_state")))
+					.date(rs.getDate("r_date"))
+					.raceResults(new HashMap<>()).build();
+					races.add(race);
+				}
+
+				horse = Horse.builder()
+				.name(rs.getString("h_name"))
+				.number(rs.getInt("h_number"))
+				.jockey(rs.getString("j_name")).build();
 				race.getRaceResults().put(horse, rs.getInt("h_place"));
 			}
 		} catch (SQLException ex){
@@ -97,10 +106,21 @@ public class RaceDAOImpl implements RaceDAO {
 	    }
 		return races;
 	}
+	
+	@Override
+	public List<Race> getAllRaces() {
+		return getListOfRaces(GET_ALL_RACES);
+	}
+	
+	@Override
+	public List<Race> getCurrentRaces() {
+		return getListOfRaces(GET_CURRENT_RACES);
+	}
 
 	@Override
-	public boolean create(Race item) {
-		try (Connection conn = connectionPool.getConnection()) {
+	public void create(Race item) {
+		try (Connection conn = connectionPool.getConnection();
+				AutoCloseable endBlock = conn::rollback) {
 			conn.setAutoCommit(false);
 			PreparedStatement r_st = conn.prepareStatement(CREATE_RACE, Statement.RETURN_GENERATED_KEYS);
 			r_st.setString(1, item.getDistance().name());
@@ -111,7 +131,6 @@ public class RaceDAOImpl implements RaceDAO {
 			int raceID = 0;
 			if( rs.next()){
                 raceID = rs.getInt(1);
-                System.out.println("Race id " + raceID);
             }
 			PreparedStatement hr_st = conn.prepareStatement(CREATE_HORSE_RACE_RECORD);
 			for (Horse horse : item.getRaceResults().keySet()) {
@@ -122,43 +141,42 @@ public class RaceDAOImpl implements RaceDAO {
 			hr_st.executeBatch();
 			conn.commit();
 			conn.setAutoCommit(true);			
-        } catch (SQLException ex){
+        } catch (Exception ex){
         	ex.printStackTrace();
         	//!!!!
         	throw new RuntimeException();
-        }
-		return true;
+        }		
 	}
 	
 	@Override
-	public boolean update(Race item) {
-		try (Connection conn = connectionPool.getConnection()) {
+	public void update(Race item) {
+		try (Connection conn = connectionPool.getConnection();
+				AutoCloseable endBlock = conn::rollback) {
 			conn.setAutoCommit(false);		
 			PreparedStatement st = conn.prepareStatement(UPDATE_RACE);
 			st.setString(1, item.getDistance().name());
 			st.setString(2, item.getState().name());
 			st.setDate(3,  new Date(item.getDate().getTime()));
 			st.setInt(6,  item.getID());
-			
 			for (Horse horse : item.getRaceResults().keySet()) {
 				st.setString(4, horse.getName());
-				st.setInt(5, item.getRaceResults().get(horse));
+				//prevent null pointer
+				st.setObject(5, item.getRaceResults().get(horse));
 				st.setString(7, horse.getName());
 				st.addBatch();
 			}
 			st.executeBatch();
 			conn.commit();
 			conn.setAutoCommit(true);			
-        } catch (SQLException ex){
+        } catch (Exception ex){
         	ex.printStackTrace();
         	//!!!!
         	throw new RuntimeException();
         } 
-		return true;
 	}
 
 	@Override
-	public boolean delete(int id) {
+	public void delete(int id) {
 		try (Connection conn = connectionPool.getConnection()) {
 			PreparedStatement st = conn.prepareStatement(DELETE_RACE);
 			st.setInt(1, id);
@@ -168,7 +186,6 @@ public class RaceDAOImpl implements RaceDAO {
 	    	//!!!!
 	    	throw new RuntimeException();
 	    }
-		return true;
 	}
 
 	@Override
@@ -188,10 +205,10 @@ public class RaceDAOImpl implements RaceDAO {
 					race.setState(RaceState.valueOf(rs.getString("r_state")));
 					race.setDate(rs.getDate("r_date"));
 				}
-				horse = new Horse();
-				horse.setName(rs.getString("h_name"));
-	            horse.setNumber(rs.getInt("h_number"));
-	            horse.setJockey(rs.getString("j_name"));
+				horse = Horse.builder()
+				.name(rs.getString("h_name"))
+	            .number(rs.getInt("h_number"))
+	            .jockey(rs.getString("j_name")).build();
 	            raceResults.put(horse, rs.getInt("h_place"));
 			}
 			race.setRaceResults(raceResults);
@@ -202,5 +219,4 @@ public class RaceDAOImpl implements RaceDAO {
         }
 		return race;
 	}
-
 }

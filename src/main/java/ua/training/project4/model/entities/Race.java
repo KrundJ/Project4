@@ -4,8 +4,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Tolerate;
+import ua.training.project4.model.entities.Horse.HorseBuilder;
+
 import java.util.Set;
 
+@Getter
+@Setter
+@Builder
+@ToString
 public class Race {
 	
 	private int ID;
@@ -14,7 +30,14 @@ public class Race {
 	private RaceState state; 
 	private Map<Horse, Integer> raceResults; 
 	
-	public enum RaceState { FINISHED, STARTED, PLANNED };
+	public enum RaceState {
+		//Winnings can be received
+		FINISHED, 
+		//Bets can be made
+		STARTED, 
+		//Still able to edit
+		PLANNED 
+	};
 	
 	public static final int NUMBER_OF_HORSES_IN_RACE = 5;
 	
@@ -34,63 +57,13 @@ public class Race {
 		}
 	};
 	
+	@Tolerate
 	public Race() {}
 	
-	public Race(Set<Horse> horses) {
-		this.state = RaceState.PLANNED;
-		Map<Horse, Integer> results = new HashMap<>();
-		for (Horse h : horses) {
-			results.put(h, null);
-		}
-		this.raceResults = results;
-	}
-	
-	public int getID() {
-		return ID;
-	}
-	
-	public RaceDistance getDistance() {
-		return distance;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public RaceState getState() {
-		return state;
-	}
-
-	public Map<Horse, Integer> getRaceResults() {	
-		return raceResults;
-	}
-
-	public void setID(int iD) {
-		ID = iD;
-	}
-
-	public void setDistance(RaceDistance distance) {
-		this.distance = distance;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public void setState(RaceState state) {
-		this.state = state;
-	}
-
-	public void setRaceResults(Map<Horse, Integer> raceResults) {
-		this.raceResults = raceResults;
-	}
-	
-	public boolean isResultsAvailable() {
-		for (Entry<Horse, Integer> e : raceResults.entrySet()) {
-			if (e.getValue() == null) return false;
-		}
-		return true;
-	}
+//	public boolean isResultsAvailable() {
+//		return raceResults.entrySet().stream()
+//				.allMatch(entry -> Objects.nonNull(entry.getValue()));
+//	}
 	
 	@Override
 	public int hashCode() {
@@ -113,11 +86,4 @@ public class Race {
 			return false;
 		return true;
 	}
-	
-	@Override
-	public String toString() {
-		return "Race [ID=" + ID + ", distance=" + distance + ", date=" + date + ", state=" + state + ", raceResults="
-				+ raceResults + "]";
-	}
-
 }

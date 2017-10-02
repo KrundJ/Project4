@@ -19,9 +19,8 @@ public class SetRaceResults extends Command {
 	
 	AdministratorService administratorService = AdministratorService.getInstance();
 
-	public SetRaceResults(String successPage, ChangePageType successType, 
-			String failPage, ChangePageType failType) {
-		super(successPage, successType, failPage, failType);
+	public SetRaceResults(String successPage, String failPage) {
+		super(successPage, failPage);
 	}
 	
 	@Override
@@ -57,6 +56,8 @@ public class SetRaceResults extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> validValues) {
 		
+		//Set status code for redirect
+		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
 
 }

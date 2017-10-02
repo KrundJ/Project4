@@ -14,9 +14,8 @@ public class SetOrEditCoefficients extends Command {
 	
 	BookmakerService bookmakerService = BookmakerService.getInstance();
 
-	public SetOrEditCoefficients(String successPage, ChangePageType successType,
-			String failPage, ChangePageType failType) {
-		super(successPage, successType, failPage, failType);
+	public SetOrEditCoefficients(String successPage, String failPage) {
+		super(successPage, failPage);
 	}
 	
 	@Override
@@ -40,6 +39,7 @@ public class SetOrEditCoefficients extends Command {
 		int raceID = (int) validValues.get("raceID");
 		Map<String, Double> coefficients = (Map<String, Double>) validValues.get("coefficients");
 		bookmakerService.setCoefficiets(raceID, coefficients);
+		//Set status code for redirect
+		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
-
 }

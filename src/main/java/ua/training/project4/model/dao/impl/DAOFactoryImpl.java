@@ -30,8 +30,7 @@ public class DAOFactoryImpl extends DAOFactory {
 	
 	@Override
 	public BetDAO getBetDAO() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BetDAOImpl(getConnectionPool());
 	}
 	
 	@Override

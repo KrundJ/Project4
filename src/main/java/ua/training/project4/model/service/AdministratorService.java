@@ -67,6 +67,14 @@ public class AdministratorService {
 
 	}
 	
+	public Race getRaceForMakingBet(int raceID) {
+		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+//		if (race.getState() != RaceState.STARTED) {
+//			throw new IllegalStateException("Can't make bet on race with state " + race.getState());
+//		}		
+		return race;
+	}
+	
 	public Race getRaceForEditing(int raceID) {
 		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
 //		if (race.getState() != RaceState.PLANNED) {
@@ -89,5 +97,9 @@ public class AdministratorService {
 	
 	public List<Race> getAllRaces() {	
 		return daoFactory.getRaceDAO().getAllRaces();
+	}
+	
+	public List<Race> getCurrentRaces() {	
+		return daoFactory.getRaceDAO().getCurrentRaces();
 	}
 }

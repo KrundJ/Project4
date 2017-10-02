@@ -1,17 +1,22 @@
 package ua.training.project4;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ua.training.project4.controller.AuthFilter;
 
 import ua.training.project4.model.dao.DAOFactory;
+import ua.training.project4.model.entities.Bet;
+import ua.training.project4.model.entities.Bet.BetType;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
@@ -19,11 +24,63 @@ import ua.training.project4.model.entities.Race.RaceState;
 import ua.training.project4.model.entities.User;
 import ua.training.project4.model.entities.User.Role;
 import ua.training.project4.model.service.AdministratorService;
+import ua.training.project4.model.service.HorseService;
+
+class ValidationResult {
+	
+	public StringBuilder result;
+	
+//	public static StringBuilder result = new StringBuilder();
+	
+	public ValidationResult() {
+		result = new StringBuilder();
+	}
+
+	public static ValidationResult checkA(ValidationResult r) {
+		r.result.append("checked A ");
+		return r;
+	}
+	
+	public static ValidationResult checkB(ValidationResult r) {
+		r.result.append("checked B ");
+		return r;
+	}
+}
+
 
 
 public class TEST {
 
 	public static void main(String[] args) {
+		
+//		new Thread("thread1") {
+//			@Override		
+//			public void run() {
+//				ValidationResult r = new ValidationResult();
+//				for(int i = 0; i < 10; i++) {
+//					ValidationResult.checkA(r).checkB(r);
+//				}
+//								
+//				System.out.println("From " + this.getName()+ " " + r.result.toString());
+//			}
+//		}.start();
+//		
+//		
+//		new Thread("thread2") {
+//			@Override		
+//			public void run() {
+//				ValidationResult r = new ValidationResult();
+//				
+//				for(int i = 0; i < 10; i++) {
+//					ValidationResult.checkA(r).checkB(r);
+//				}
+//				
+//				System.out.println("From " + this.getName()+ " " + r.result.toString());
+//			}
+//		}.start();
+
+		
+		
 		//Locale l = Locale.forLanguageTag("uk-UA");
 //		Locale l = Locale.forLanguageTag("dfafsaf");
 //		
@@ -32,7 +89,7 @@ public class TEST {
 //		}
 //		
 	
-		System.out.println("/app/administrator/".matches("^/app(/[a-z/\\d]+)/?$"));
+//		System.out.println("/app/administrator/".matches("^/app(/[a-z/\\d]+)/?$"));
 		
 //		Map<String, Integer> horseNameAndValue = new HashMap<>();
 //		{
@@ -43,14 +100,31 @@ public class TEST {
 //
 //		Map<Horse, Integer> raceResults = new HashMap<>();
 //		{
-//			Horse h = new Horse();
-//			h.setName("ccc");
+//			Horse h = Horse.builder().name("ccc").build();
 //			raceResults.put(h, 5);
-//			Horse h2 = new Horse();
-//			h2.setName("aaa");
-//			raceResults.put(h2, 5);
+//			Horse h2 = Horse.builder().name("aaa").build();
+//			raceResults.put(h2, 8);
 //		}
 //		
+//		
+//		boolean b = raceResults.entrySet().stream()
+//		.allMatch(entry -> Objects.nonNull(entry.getValue()));
+//		
+//		System.out.println(b);
+		
+//		Race race = DAOFactory.getInstance().getRaceDAO().getRaceByID(1000);
+//		
+//		Bet bet = Bet.builder().horseName("").betType(BetType.SHOW_BET).build();
+//
+//			boolean b = race.getRaceResults().entrySet().stream()
+//				.filter(e -> e.getKey().getName().equals(bet.getHorseName()))
+//				.filter(e -> Arrays.stream(bet.getBetType().getWinPlaces())
+//						.anyMatch(p -> p == e.getValue().intValue()))
+//				.findAny().isPresent();
+//			
+//		System.out.println(b);
+				
+			
 //		raceResults.keySet().stream()
 //		.map(Horse::getName).collect(Collectors.toSet()).forEach(System.out::println);
 		
@@ -67,8 +141,11 @@ public class TEST {
 //		}
 		
 		
-		Coefficients c = DAOFactory.getInstance().getCoefficientsDAO().getByRaceID(1001);
-		System.out.println(c);
+//		List<Coefficients> c = DAOFactory.getInstance().getCoefficientsDAO().getCoefficientsForCurrentRaces();
+//		System.out.println(c.size());
+		
+//		List<Race> r = DAOFactory.getInstance().getRaceDAO().getCurrentRaces();
+//		System.out.println(r.size());
 //		
 //		Set<Horse> h = DAOFactory.getInstance().getHorseDAO().getAllHorses();
 //		

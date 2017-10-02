@@ -58,7 +58,9 @@
 				</tr>
 				<c:forEach items="${races}" var="race">
 					<tr>
-						<td>${race.distance.getDistance()}</td>
+						<td>
+							${race.distance.getDistance()}
+						</td>
 						<td>
 							<c:if test="${race.state == 'FINISHED'}">
 								first<br>
