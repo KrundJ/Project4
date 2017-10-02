@@ -2,6 +2,7 @@ package ua.training.project4.model.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,11 +13,14 @@ import ua.training.project4.model.entities.Bet;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
+import ua.training.project4.model.entities.User;
 import ua.training.project4.model.entities.Race.RaceState;
 
 
 public class BookmakerService {
-		
+	
+	private AdministratorService administratorService = AdministratorService.getInstance();
+	
 	private static BookmakerService instance;
 	
 	private DAOFactory daoFactory;
@@ -32,6 +36,13 @@ public class BookmakerService {
 		return instance;
 	}	
 	
+	private Coefficients getOrThrowOnEmptyOptional(Optional<Coefficients> coefOptional) {
+		if (! coefOptional.isPresent()) {
+			throw new RuntimeException("Add message here");
+		}
+		return coefOptional.get();
+	}
+	
 	public List<Coefficients> getCoefficientsForAllRaces() {
 		return daoFactory.getCoefficientsDAO().getCoefficientsForAllRaces();
 	}
@@ -41,13 +52,12 @@ public class BookmakerService {
 	}
 	
 	public Coefficients getCoefficients(int raceID) {
-		return daoFactory.getCoefficientsDAO().getByRaceID(raceID);
+		return getOrThrowOnEmptyOptional(
+				daoFactory.getCoefficientsDAO().getByRaceID(raceID));
 	}
 	
-	private Coefficients createCoefficients(int raceID, Map<String, Double> horseNameAndValue) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
-		if (! race.getState().equals(RaceState.PLANNED)) 
-			throw new RuntimeException("Cant set coefficients for race with state " + race.getState());
+	private Coefficients createCoefficients(int raceID, Map<String, Double> horseNameAndValue) {		
+		Race race = administratorService.getPlannedRace(raceID);
 		
 		horseNameAndValue.keySet().stream()
 		.filter(name -> (! race.getRaceResults().keySet().stream()

@@ -1,6 +1,7 @@
 package ua.training.project4.controller.commands.user;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ public class MakeBet extends Command {
 		
 		if (vresult.hasErrors()) {
 			req.setAttribute("race", administratorService
-					.getRaceForMakingBet((int) vresult.getValidValues().get("raceID")));
+					.getStartedRace((int) vresult.getValidValues().get("raceID")));
 		}
 		
 		return vresult;
@@ -50,7 +51,6 @@ public class MakeBet extends Command {
 				.betType((BetType) validValues.get("betType"))
 				.horseName((String) validValues.get("horseName")).build()
 		);
-		
 		req.setAttribute("bet", bet);
 		//Forward to message page
 	}

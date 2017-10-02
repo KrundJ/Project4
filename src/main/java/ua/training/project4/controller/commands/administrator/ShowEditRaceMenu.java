@@ -31,7 +31,7 @@ public class ShowEditRaceMenu extends Command {
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		Race raceToEdit = administratorService
-					.getRaceForEditing((int) validValues.get("raceID"));
+					.getPlannedRace((int) validValues.get("raceID"));
 		req.setAttribute("raceToEdit", raceToEdit);
 		Set<Horse> horses = horseService.getAllHorses();
 		req.setAttribute("horses", horses);

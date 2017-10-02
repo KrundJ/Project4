@@ -1,12 +1,13 @@
 package ua.training.project4.model.dao;
 
+import java.util.Optional;
+
 import ua.training.project4.model.entities.User;
 
 public interface UserDAO {
 	
-	public boolean create(User item);
-
-	public boolean delete(String login);
+	public void create(User item);
 	
-	public User getByLogin(String login);
+	public Optional<User> getByLogin(String login);
+	
 }

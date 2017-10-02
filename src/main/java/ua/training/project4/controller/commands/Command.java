@@ -42,25 +42,12 @@ public abstract class Command {
 	}
 	
 	private String successPage;
-//	private ChangePageType successType;
 	private String failPage;
-//	private ChangePageType failType;
-	
-	//REMOVE AND SET REDIRECT IN COMMAND, IF NOT SET FORWARD
-//	public enum ChangePageType { FORWARD, REDIRECT };	
 
 	public Command(String successPage) {
 		this(successPage, null);
 	}
-	
-//	public Command(String successPage, ChangePageType successType, 
-//				String failPage, ChangePageType failType) {
-//		this.successPage = successPage;
-//		this.successType = successType;
-//		this.failPage = failPage;
-//		this.failType = failType;
-//	}
-	
+		
 	public Command(String successPage,
 			String failPage) {
 	this.successPage = successPage;
@@ -80,52 +67,14 @@ public abstract class Command {
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
 		return result;
 	}
-
-	private Locale getLocaleOrUS(String newLang) {
-		Locale loc;
-			switch (newLang) {
-				case "en": {
-					loc = Locale.US;
-					break;
-				}
-				case "ru": {
-					loc = Locale.forLanguageTag("ru-RU");
-					break;
-				}
-				default: {
-					loc = Locale.US;
-				}
-			}
-		return loc;
-	}
-	
-	private void manageLocale(HttpServletRequest req) {
-		//if locale changed
-		Locale newLocale = null;
-		if (req.getParameter("new_lang") != null) {
-			newLocale = getLocaleOrUS(req.getParameter("new_lang"));
-			req.getSession().setAttribute("locale", newLocale);
-		}
-		Locale loc = (Locale) req.getSession().getAttribute("locale");
-		if (loc == null) 
-			loc = Locale.US;
-		//put locale specific values
-		req.setAttribute("locale", loc);
-		req.setAttribute("dateFormat", 
-					((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.MEDIUM, loc))
-							.toLocalizedPattern());
-	}
-			
+		
 	protected abstract void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues);
 
 	public final void execute(HttpServletRequest req, HttpServletResponse resp) 
 				throws IOException, ServletException {
-		
-		manageLocale(req);
 
-		ValidationResult result = validateInput(req, new ValidationResult());
-		
+		ValidationResult result = validateInput(req, new ValidationResult());		
 		if (result.hasErrors()) {
 			req.setAttribute("errors", result.errors);
 			req.getRequestDispatcher(getFailPage()).forward(req, resp);
@@ -138,21 +87,5 @@ public abstract class Command {
 				req.getRequestDispatcher(getSuccessPage()).forward(req, resp);
 			}
 		}
-		
-//		if (result.hasErrors()) {
-//			req.setAttribute("errors", result.errors);
-//			if (ChangePageType.FORWARD.equals(this.failType)) {
-//				req.getRequestDispatcher(getFailPage()).forward(req, resp);
-//			} else {
-//				resp.sendRedirect(getFailPage());
-//			}
-//		} else {
-//			peformAction(req, resp, result.values);
-//			if (ChangePageType.FORWARD.equals(this.successType)) {
-//				req.getRequestDispatcher(getSuccessPage()).forward(req, resp);
-//			} else {
-//				resp.sendRedirect(getSuccessPage());
-//			}
-//		}
 	}
 }

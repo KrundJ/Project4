@@ -1,12 +1,13 @@
 package ua.training.project4.model.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import ua.training.project4.model.entities.Race;
 
 public interface RaceDAO {
 
-	public Race getRaceByID(int raceID);
+	public Optional<Race> getRaceByID(int raceID);
 		
 	public List<Race> getAllRaces();
 	

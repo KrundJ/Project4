@@ -30,6 +30,7 @@ import ua.training.project4.controller.commands.user.ShowCurrentRaces;
 import ua.training.project4.controller.commands.user.ShowWinningsForm;
 import ua.training.project4.controller.commands.user.WinningsMessage;
 import ua.training.project4.controller.commands.Command;
+import ua.training.project4.controller.commands.SetLocale;
 
 public class Servlet extends HttpServlet {
 		
@@ -39,6 +40,8 @@ public class Servlet extends HttpServlet {
 	
 	@Override
 	public void init(){
+		commands.put("POST:/locale", 
+	   			new SetLocale("/"));
 	   	//ADMINISTRATOR
 	   	commands.put("GET:/administrator", 
 	   			new ShowAdministratorControls("/WEB-INF/jsp/administrator_main.jsp"));

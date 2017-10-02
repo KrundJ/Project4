@@ -1,9 +1,11 @@
+<%@page import="java.util.Locale"%>
 <%@page import="ua.training.project4.model.entities.Race"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="/WEB-INF/mytags.tld" prefix="mm" %>  
+<%@ page session="true" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,27 +14,33 @@
 <title>Administrator</title>
 <link rel="stylesheet" type="text/css" href="/stylesheet.css">
 </head>
-<body>
-	<mm:today />
+<body>	
 	<div class="container">
 		<div class="topDiv">
-			<div class="topBar left"></div>
-
+					
+			<div class="topBar left">
+			
+			</div>
+			<%--locale set in command, request parameter --%>
+			<c:set var="language" value="${sessionScope.locale.getLanguage()}"></c:set>
+			<fmt:setLocale value="${language}" />
+			<fmt:setBundle basename="ua.training.project4.messages"/>
+			
 			<div class="topBar right">
-				<form action="/app/administrator" method="get"
+				<form action="/app/locale" method="post"
 					enctype="application/x-www-form-urlencoded">
 					<table style="border: solid; border-color: black; float: right;">
 						<tr>
 							<td>
-								<c:if test="${lang eq 'en'}">
+								<c:if test="${language eq 'en'}">
 									<c:set value="selected=\"\"" var="selectedEn"></c:set>
 								</c:if> 
-								<c:if test="${lang eq 'ru'}">
+								<c:if test="${language eq 'ru'}">
 									<c:set value="selected=\"\"" var="selectedRu"></c:set>
 								</c:if> 
 								<select name="new_lang">
 									<option value="en" ${selectedEn}>English(US)</option>
-									<option value="ru" ${selectedRu}>Russian</option>
+									<option value="ru" ${selectedRu}>Русский</option>
 								</select>
 							</td>
 							<td><input type="submit" value="Change"></td>
@@ -43,7 +51,7 @@
 		</div>
 
 		<div class="content">
-			<h2>Races:</h2>
+			<h2><fmt:message key="jsp.admin.main.title"/></h2>
 			<h4>
 				<a href="/app/administrator/new">Create a new race</a>
 			</h4>

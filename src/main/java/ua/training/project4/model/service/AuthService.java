@@ -1,43 +1,40 @@
 package ua.training.project4.model.service;
 
+import java.util.Optional;
+
 import ua.training.project4.model.dao.DAOFactory;
-import ua.training.project4.model.dao.UserDAO;
 import ua.training.project4.model.entities.User;
-import ua.training.project4.model.entities.User.Role;
 
 public class AuthService {
 	
-	private static AuthService instance = null;
+	private static AuthService instance;
+	
+	private DAOFactory daoFactory;
 	
 	private AuthService() {
-		
+		daoFactory = DAOFactory.getInstance();
 	}
-
+			
 	public static AuthService getInstance() {
-		if (instance != null) 
-			return instance;
-		
-		instance = new AuthService();
-		return instance;	
+		if (instance == null) {
+			instance = new AuthService();
+		}
+		return instance;
+	}
+	
+	private User getOrThrowOnEmptyOptional(Optional<User> userOptional) {
+		if (! userOptional.isPresent()) {
+			throw new RuntimeException("Add message here");
+		}
+		return userOptional.get();
 	}
 	
 	public User getUserByLogin(String login) {
-		return null;
+		return getOrThrowOnEmptyOptional(
+				daoFactory.getUserDAO().getByLogin(login));
 	}
 	
 	public void addUser(User user) {
-		DAOFactory.getInstance().getUserDAO().create(user);
+		daoFactory.getUserDAO().create(user);
 	}
-	
-	public void removeUser(String login) {
-		DAOFactory.getInstance().getUserDAO().delete(login);
-	}
-
-//	public void assignRole(String login, Role role) {
-//		UserDAO dao = DAOFactory.getInstance().getUserDAO();
-//		User u = dao.getByLogin(login);
-//		u.setRole(role);
-//		dao.update(u);
-//	}
-	
 }

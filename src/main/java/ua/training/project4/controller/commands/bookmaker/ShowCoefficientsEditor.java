@@ -29,7 +29,6 @@ public class ShowCoefficientsEditor extends Command {
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
 		int raceID = (int) validValues.get("raceID");
-		System.out.println(raceID);
 		req.setAttribute("coefficients", bookmakerService.getCoefficients(raceID));
 		req.setAttribute("raceID", raceID);
 	}

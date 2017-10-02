@@ -23,6 +23,8 @@ public class DAOFactoryImpl extends DAOFactory {
 	        pool.setPassword(config.getPass());
 	        pool.setUsername(config.getUsername());
 	        pool.setInitialSize(config.getPoolSize());
+	        pool.setDefaultAutoCommit(true);
+	        pool.setEnableAutoCommitOnReturn(true);
 	        connectionPool = pool;
 	    }
 	    return connectionPool;

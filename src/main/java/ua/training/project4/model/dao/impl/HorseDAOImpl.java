@@ -33,62 +33,49 @@ public class HorseDAOImpl implements HorseDAO {
 		this.connectionPool = connectionPool;
 	}
 	
-	public Horse extractHorseFromResultSet(ResultSet rs) throws SQLException {
+	public static Horse extractHorseFromResultSet(ResultSet rs) throws SQLException {
 		return  Horse.builder()
 	            .name(rs.getString(NAME_FIELD))
 	            .number(rs.getInt(NUMBER_FIELD))
 	            .jockey(rs.getString(JOCKEY_FIELD)).build();
 	}
 	
-	private Set<Horse> queryForHorses() {
-		return null;
-	}
-		
-	@Override
-	public Set<Horse> getHorsesByNames(String... names) {
+	private Set<Horse> queryForHorses(String query, String... names) {
 		Set<Horse> horses = new HashSet<>();
 		try (Connection conn = connectionPool.getConnection()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("(");
-			for (int i = 0; i < names.length; i++) {
-				sb.append(names[i]);
-				if (! (i == names.length - 1))
-					sb.append(", ");
-			}
-			sb.append(")");
-
-			PreparedStatement st = conn.prepareStatement(FIND_HORSES_BY_NAMES + sb.toString());
+			PreparedStatement st = conn.prepareStatement(query);
 			for (int j = 0; j < names.length; j++) {
 				st.setString(j+1, names[j]);				
 			}
-			
 			ResultSet rs = st.executeQuery();
             while(rs.next()){
 	            horses.add(extractHorseFromResultSet(rs));
             }
         } catch (SQLException ex){
         	ex.printStackTrace();
-        	//!!!!
+        	//LOG
         	throw new RuntimeException();
         }
 		return horses;
 	}
+		
+	@Override
+	public Set<Horse> getHorsesByNames(String... names) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(FIND_HORSES_BY_NAMES);
+		sb.append("(");
+		for (int i = 0; i < names.length; i++) {
+			sb.append("?");
+			if (!(i == names.length - 1))
+				sb.append(", ");
+		}
+		sb.append(")");
+		return queryForHorses(sb.toString(), names);
+	}
 
 	@Override
 	public Set<Horse> getAllHorses() {
-		Set<Horse> horses = new HashSet<>();
-		try (Connection conn = connectionPool.getConnection()) {
-			Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(FIND_ALL_HORSES);
-            while(rs.next()){	
-	            horses.add(extractHorseFromResultSet(rs));
-            }
-        } catch (SQLException ex){
-        	ex.printStackTrace();
-        	//To error page
-        	throw new RuntimeException();
-        } 
-		return horses;
+		return queryForHorses(FIND_ALL_HORSES);
 	}
 }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -78,7 +79,12 @@ public class TEST {
 //				System.out.println("From " + this.getName()+ " " + r.result.toString());
 //			}
 //		}.start();
+		
+		
+//		Optional<Integer> i = Optional.ofNullable(null);
+//		System.out.println(i.orElseThrow(RuntimeException::new));
 
+		//System.out.println(DAOFactory.getInstance().getBetDAO().getBetByID(2000));
 		
 		
 		//Locale l = Locale.forLanguageTag("uk-UA");

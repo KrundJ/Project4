@@ -1,5 +1,14 @@
 package ua.training.project4.model.entities;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@Builder
+@ToString
 public class User {
 	
 	private String login;
@@ -9,36 +18,7 @@ public class User {
 	private Role role;
 	
 	public enum Role { ADMINISTRATOR, BOOKMAKER, USER }
-
-	public String getLogin() {
-		return login;
-	}
-
-	public String getPassHash() {
-		return passHash;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public void setPassHash(String passHash) {
-		this.passHash = passHash;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	@Override
-	public String toString() {
-		return "User [login=" + login + ", passHash=" + passHash  + ", role=" + role + "]";
-	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

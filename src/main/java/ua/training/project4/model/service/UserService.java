@@ -2,6 +2,7 @@ package ua.training.project4.model.service;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import ua.training.project4.model.dao.DAOFactory;
@@ -11,6 +12,10 @@ import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Race.RaceState;
 
 public class UserService {
+	
+	private AdministratorService administratorService = AdministratorService.getInstance();
+	
+	private BookmakerService bookmakerService = BookmakerService.getInstance();
 	
 	private static UserService instance;
 	
@@ -27,49 +32,53 @@ public class UserService {
 		return instance;
 	}	
 	
+	private Bet getOrThrowOnEmptyOptional(Optional<Bet> betOptional) {
+		if (! betOptional.isPresent()) {
+			throw new RuntimeException("Bet not found");
+		}
+		return betOptional.get();
+	}
+		
 	public Bet makeBet(Bet bet) {
-		Race race = daoFactory.getInstance().getRaceDAO().getRaceByID(bet.getRaceID());
-//		if (race.getState() != RaceState.STARTED) {
-//			throw new RuntimeException("Can't make bet on race with state " + race.getState());
-//		}
+		Race race = administratorService.getStartedRace(bet.getRaceID());
 //		if (race.getRaceResults().keySet().stream()
 //				.noneMatch(h -> h.getName().equals(bet.getHorseName()))) {
-//			
 //			throw new RuntimeException(String.format("Horse with name %s not present in race", bet.getHorseName()));			
 //		}
-		
-		return daoFactory.getBetDAO().makeBet(bet);
+		return getOrThrowOnEmptyOptional(
+				daoFactory.getBetDAO().create(bet));
 	}
 	
-	private boolean isWin(Bet bet, Race race) {
-		return race.getRaceResults().entrySet().stream()
+	private void winOrException(Bet bet, Race race) {
+		boolean win = race.getRaceResults().entrySet().stream()
 			.filter(e -> e.getKey().getName().equals(bet.getHorseName()))
 			.filter(e -> Arrays.stream(bet.getBetType().getWinPlaces())
 					.anyMatch(p -> p == e.getValue().intValue()))
 			.findAny().isPresent();
+		
+		if (! win) throw new RuntimeException("Sorry, your bet didn't win");
+	}
+	
+	private int billBet(Bet bet, double horseCoefficient) {
+		bet.setWinningsReceived(true);
+		daoFactory.getBetDAO().update(bet);
+		return (int) Math.round(
+					bet.getAmount() 
+					* bet.getBetType().getWinningsMultiplier()
+					* horseCoefficient); 
 	}
 	
 	public int calculateWinnings(int betID) throws Exception {
-		//REWRITE WITH OPTIONALS
-		Bet bet = Objects.requireNonNull(
-				daoFactory.getBetDAO().getBetByID(betID),
-				"Bet with ID " + betID + " not found");
-		Race race = daoFactory.getRaceDAO().getRaceByID(bet.getRaceID());
-		if (! race.getState().equals(RaceState.FINISHED))
-			throw new Exception("Can't get winnings for race with state " + race.getState());
+		Bet bet = getOrThrowOnEmptyOptional(
+				daoFactory.getBetDAO().getBetByID(betID));
+		Race race = administratorService.getFinishedRace(bet.getRaceID());
 		
-		Coefficients coefficients = daoFactory.getCoefficientsDAO().getByRaceID(race.getID());
-		double coef_value = coefficients.getValues().get(race.getRaceResults().keySet().stream()
-				.filter(h -> h.getName().equals(bet.getHorseName())).findFirst());
-		
-		if (isWin(bet, race)) {
-			//SET WINNINGS RECEIVED
-			return (int) Math.round(
-					bet.getAmount() 
-					* bet.getBetType().getWinningsMultiplier()
-					* coef_value); 
-		} else {
-			throw new Exception("Sorry, your bet didn't win");
-		}
+		winOrException(bet, race);
+		Coefficients coefficients = bookmakerService.getCoefficients(bet.getRaceID());
+		double horseCoefficient = coefficients.getValues()
+				.get(race.getRaceResults().keySet().stream()
+						.filter(h -> h.getName().equals(bet.getHorseName()))
+						.findFirst());
+		return billBet(bet, horseCoefficient);
 	}
 }

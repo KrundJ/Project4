@@ -29,7 +29,7 @@ public class ShowBetEditor extends Command {
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
 		int raceID = (int) validValues.get("raceID");
-		req.setAttribute("race", administratorService.getRaceForMakingBet(raceID));
+		req.setAttribute("race", administratorService.getStartedRace(raceID));
 	}
 
 }

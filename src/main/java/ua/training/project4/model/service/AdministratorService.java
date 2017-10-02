@@ -3,6 +3,7 @@ package ua.training.project4.model.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import ua.training.project4.model.dao.DAOFactory;
@@ -28,13 +29,21 @@ public class AdministratorService {
 		}
 		return instance;
 	}
+	
+	private Race getOrThrowOnEmptyOptional(int raceID) {
+		Optional<Race> raceOptional = daoFactory.getRaceDAO().getRaceByID(raceID);
+		if (! raceOptional.isPresent()) {
+			throw new RuntimeException();
+		}
+		return raceOptional.get();
+	}
 		
 	public void organizeRace(Race race) {
 		daoFactory.getRaceDAO().create(race);
 	}
 		
 	public void deletePlannedRace(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+		Race race = getOrThrowOnEmptyOptional(raceID); 
 		if (race.getState() != RaceState.PLANNED) {
 			throw new IllegalStateException("Can't delete race with state " + race.getState());
 		}		
@@ -42,7 +51,7 @@ public class AdministratorService {
 	}
 		
 	public void startRace(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+		Race race = getOrThrowOnEmptyOptional(raceID); 
 		if (race.getState() != RaceState.PLANNED) {
 			throw new IllegalStateException("Can't start race with state " + race.getState());
 		}
@@ -51,7 +60,7 @@ public class AdministratorService {
 	}
 	
 	public void finishRace(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+		Race race = getOrThrowOnEmptyOptional(raceID); 
 		if (race.getState() != RaceState.STARTED) {
 			throw new IllegalStateException("Can't finish race with state " + race.getState());
 		}
@@ -67,16 +76,16 @@ public class AdministratorService {
 
 	}
 	
-	public Race getRaceForMakingBet(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+	public Race getStartedRace(int raceID) {
+		Race race = getOrThrowOnEmptyOptional(raceID); 
 //		if (race.getState() != RaceState.STARTED) {
 //			throw new IllegalStateException("Can't make bet on race with state " + race.getState());
 //		}		
 		return race;
 	}
 	
-	public Race getRaceForEditing(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+	public Race getPlannedRace(int raceID) {
+		Race race = getOrThrowOnEmptyOptional(raceID);
 //		if (race.getState() != RaceState.PLANNED) {
 //			throw new IllegalStateException("Can't edit race with state " + race.getState());
 //		}		
@@ -84,7 +93,7 @@ public class AdministratorService {
 	}
 	
 	public Race getRaceForSettingResults(int raceID) {
-		Race race = daoFactory.getRaceDAO().getRaceByID(raceID);
+		Race race = getOrThrowOnEmptyOptional(raceID);
 //		if (race.getState() != RaceState.FINISHED) {
 //			throw new IllegalStateException("Can't edit race with state " + race.getState());
 //		}	
@@ -92,6 +101,13 @@ public class AdministratorService {
 //		if (race.isResultsAvailable()) {
 //			throw new IllegalStateException("Results already set");
 //		}
+		return race;
+	}
+	
+	public Race getFinishedRace(int raceID) {	
+		Race race = getOrThrowOnEmptyOptional(raceID); 
+		if (! race.getState().equals(RaceState.FINISHED)) 
+			throw new RuntimeException("Cant set coefficients for race with state " + race.getState());
 		return race;
 	}
 	

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -51,14 +52,16 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 	private static final String UPDATE = "UPDATE horses_races " 
 			+ "SET horses_races.h_coefficient = ? "
 			+ "WHERE horses_races.r_id = ? AND horses_races.h_name = ?";
+	
+	public static final String COEF_FIELD = "h_coefficient";
 			
 	public CoefficientsDAOImpl(BasicDataSource connectionPool) {
 		this.connectionPool = connectionPool;
 	}
 			
 	@Override
-	public Coefficients getByRaceID(int raceID) {
-		Coefficients result = new Coefficients();
+	public Optional<Coefficients> getByRaceID(int raceID) {
+		Optional<Coefficients> result = Optional.empty();
 		try (Connection conn = connectionPool.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(GET_BY_RACE_ID);
 			ps.setInt(1, raceID);
@@ -67,18 +70,15 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
             Horse horse;
             while(rs.next()){
             	if (rs.isFirst()) {
-					result.setRaceID(rs.getInt("r_id"));
+					result.get().setRaceID(rs.getInt(RaceDAOImpl.ID_FIELD));
 				}
-	            horse = Horse.builder()
-	            .name(rs.getString("h_name"))
-	            .number(rs.getInt("h_number"))
-	            .jockey(rs.getString("j_name")).build();
-	            values.put(horse, rs.getDouble("h_coefficient"));
+            	horse = HorseDAOImpl.extractHorseFromResultSet(rs);
+	            values.put(horse, rs.getDouble(COEF_FIELD));
             }
-            result.setValues(values);
+            result.get().setValues(values);
         } catch (SQLException ex){
         	ex.printStackTrace();
-        	//!!!!
+        	//LOGs
         	throw new RuntimeException();
         } 
 		return result;
@@ -93,27 +93,21 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
             Horse horse = null;
             Coefficients coef = null;
             while (rs.next()) {	
-
-				if (Objects.nonNull(coef) && rs.getInt("r_id") != coef.getRaceID()) { 
+				if (Objects.nonNull(coef) && rs.getInt(RaceDAOImpl.ID_FIELD) != coef.getRaceID()) { 
 					coef = null;
-				}
-	
+				}	
 				if (Objects.isNull(coef)) { 
 					coef = Coefficients.builder()
 					.values(new HashMap<>())
-					.raceID(rs.getInt("r_id")).build();
+					.raceID(rs.getInt(RaceDAOImpl.ID_FIELD)).build();
 					result.add(coef);
 				}
-				
-				horse = Horse.builder()
-				.name(rs.getString("h_name"))
-				.number(rs.getInt("h_number"))
-				.jockey(rs.getString("j_name")).build();
-				coef.getValues().put(horse, rs.getDouble("h_coefficient"));
+				horse = HorseDAOImpl.extractHorseFromResultSet(rs);
+				coef.getValues().put(horse, rs.getDouble(COEF_FIELD));
 			}
         } catch (SQLException ex){
         	ex.printStackTrace();
-        	//!!!!
+        	//LOG
         	throw new RuntimeException();
         } 
 		return result;
@@ -143,10 +137,9 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			}
 			st.executeBatch();
 			conn.commit();
-			conn.setAutoCommit(true);			
         } catch (Exception ex){
         	ex.printStackTrace();
-        	//!!!!
+        	//LOG
         	throw new RuntimeException();
         } 
 	}

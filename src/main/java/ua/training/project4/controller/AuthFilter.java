@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,8 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.project4.model.dao.DAOFactory;
 import ua.training.project4.model.entities.User;
 import ua.training.project4.model.entities.User.Role;
+import ua.training.project4.model.service.AuthService;
 
 class Auth {
+	
+	private AuthService authService = AuthService.getInstance();
 	
 	private Map<String, Role> permissions = new HashMap<>();
 	
@@ -50,7 +54,8 @@ class Auth {
 	public ServletResponse check(ServletRequest req, ServletResponse resp) throws IOException {
 		for (Map.Entry<String, Role> entry : permissions.entrySet()) {
 			if (((HttpServletRequest) req).getRequestURI().matches(entry.getKey()) 
-							&& entry.getValue() != null) {
+							&& Objects.nonNull(entry.getValue())) {
+				
 				Principal p = ((HttpServletRequest) req).getUserPrincipal();
 				if (p == null) {
 					//login
@@ -58,8 +63,7 @@ class Auth {
 					((HttpServletResponse) resp).sendRedirect("/app/login");
 					return resp;
 				}
-				User user = DAOFactory.getInstance().getUserDAO()
-							.getByLogin(p.getName());
+				User user = authService.getUserByLogin(p.getName());
 				if (user.getRole().equals(entry.getValue())) {
 					//OK
 					System.out.println("Auth match");
@@ -90,14 +94,12 @@ class Auth {
 	}
 }
 
-//@WebFilter(filterName="auth", urlPatterns={"/*"})
 public class AuthFilter implements Filter {
 	
 	private Auth auth;
 	
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		System.out.println("auth");
-//		System.out.println("Status" + ((HttpServletResponse) response).getStatus());
 		ServletResponse processedResp = auth.check(req, resp);
 		//if request response status redirect(in case of login) or forbidden(not OK) - stop filtering
 		if (((HttpServletResponse) processedResp).getStatus() != HttpServletResponse.SC_OK)

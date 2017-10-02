@@ -1,12 +1,13 @@
 package ua.training.project4.model.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import ua.training.project4.model.entities.Coefficients;
 
 public interface CoefficientsDAO {
 
-	public Coefficients getByRaceID(int raceID);
+	public Optional<Coefficients> getByRaceID(int raceID);
 	
 	public List<Coefficients> getCoefficientsForAllRaces();
 	
