@@ -31,11 +31,11 @@ public class Race {
 	private Map<Horse, Integer> raceResults; 
 	
 	public enum RaceState {
-		//Winnings can be received
+		//Users can get winnings 
 		FINISHED, 
-		//Bets can be made
+		//Bets can be made, results cen be set
 		STARTED, 
-		//Still able to edit
+		//Able to edit race, set coefficients
 		PLANNED 
 	};
 	
@@ -59,11 +59,6 @@ public class Race {
 	
 	@Tolerate
 	public Race() {}
-	
-//	public boolean isResultsAvailable() {
-//		return raceResults.entrySet().stream()
-//				.allMatch(entry -> Objects.nonNull(entry.getValue()));
-//	}
 	
 	@Override
 	public int hashCode() {

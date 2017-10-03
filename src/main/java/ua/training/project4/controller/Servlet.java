@@ -30,7 +30,12 @@ import ua.training.project4.controller.commands.user.ShowCurrentRaces;
 import ua.training.project4.controller.commands.user.ShowWinningsForm;
 import ua.training.project4.controller.commands.user.WinningsMessage;
 import ua.training.project4.controller.commands.Command;
+import ua.training.project4.controller.commands.Login;
+import ua.training.project4.controller.commands.Logout;
+import ua.training.project4.controller.commands.Register;
 import ua.training.project4.controller.commands.SetLocale;
+import ua.training.project4.controller.commands.ShowLoginForm;
+import ua.training.project4.controller.commands.ShowRegisterForm;
 
 public class Servlet extends HttpServlet {
 		
@@ -42,6 +47,16 @@ public class Servlet extends HttpServlet {
 	public void init(){
 		commands.put("POST:/locale", 
 	   			new SetLocale("/"));
+		commands.put("GET:/login", 
+	   			new ShowLoginForm("/WEB-INF/jsp/login.jsp"));
+		commands.put("POST:/login", 
+	   			new Login("/", "/WEB-INF/jsp/login.jsp"));
+		commands.put("GET:/register", 
+	   			new ShowRegisterForm("/WEB-INF/jsp/register.jsp"));
+		commands.put("POST:/register", 
+	   			new Register("/", "/WEB-INF/jsp/register.jsp"));
+		commands.put("POST:/logout", 
+	   			new Logout("/"));
 	   	//ADMINISTRATOR
 	   	commands.put("GET:/administrator", 
 	   			new ShowAdministratorControls("/WEB-INF/jsp/administrator_main.jsp"));

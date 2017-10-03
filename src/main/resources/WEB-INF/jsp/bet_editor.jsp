@@ -25,14 +25,14 @@
 						<b>Horse:</b>
 					</td>
 					<td>
-						<select name="horse">
+						<select name="horseName">
 							<c:forEach items="${race.raceResults.keySet()}" var="horse">
 								<option value="${horse.name}">${horse.name}</option>
 							</c:forEach>
 						</select>
-						<c:if test="${not empty errors['horse']}">
+						<c:if test="${not empty errors['horseName']}">
 							<br>
-							<span><c:out value="${errors['horse']}"></c:out></span>
+							<span><c:out value="${errors['horseName']}"></c:out></span>
 						</c:if>
 					</td>
 				</tr>
@@ -53,7 +53,7 @@
 						<b>Amount:</b>
 					</td>
 					<td>
-						<input type="text" name="amount" size="10"/>
+						<input type="text" name="betAmount" size="10"/>
 						<c:if test="${not empty errors['amount']}">
 							<br>
 							<span><c:out value="${errors['amount']}"></c:out></span>

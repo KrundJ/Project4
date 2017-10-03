@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.commands.Command;
-import ua.training.project4.controller.commands.Validation;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.service.BookmakerService;
+import static ua.training.project4.view.Constants.*;
 
 public class SetOrEditCoefficients extends Command {
 	
@@ -20,24 +20,22 @@ public class SetOrEditCoefficients extends Command {
 	
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		Validation v = Validation.getInstance();
-		ValidationResult vresult = v.checkCoefficients(req, result);
-		vresult = v.checkRaceID(req, vresult);
-		
-		if (vresult.hasErrors()) {
-			int raceID = (int) vresult.getValidValues().get("raceID");		
-			req.setAttribute("coefficients", bookmakerService.getCoefficients(raceID));
-			req.setAttribute("raceID", raceID);
+			
+		result.checkRaceID(req).checkCoefficients(req);
+		if (result.hasErrors()) {
+			int raceID = (int) result.getValidValues().get(RACE_ID);
+			Coefficients coefficients = bookmakerService.getCoefficients(raceID);
+			ShowCoefficientsEditor.setRequestAttributes(req, coefficients, raceID);
 		}
-		return vresult;
+		return result;
 	}
 
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
-		int raceID = (int) validValues.get("raceID");
-		Map<String, Double> coefficients = (Map<String, Double>) validValues.get("coefficients");
+		int raceID = (int) validValues.get(RACE_ID);
+		Map<String, Double> coefficients = (Map<String, Double>) validValues.get(COEFFICIENTS);
 		bookmakerService.setCoefficiets(raceID, coefficients);
 		//Set status code for redirect
 		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);

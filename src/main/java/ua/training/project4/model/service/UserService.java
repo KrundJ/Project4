@@ -12,10 +12,8 @@ import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Race.RaceState;
 
 public class UserService {
-	
-	private AdministratorService administratorService = AdministratorService.getInstance();
-	
-	private BookmakerService bookmakerService = BookmakerService.getInstance();
+
+	private ServiceFactory factory = ServiceFactory.getInstance();
 	
 	private static UserService instance;
 	
@@ -26,7 +24,7 @@ public class UserService {
 	}
 			
 	public static UserService getInstance() {
-		if (instance == null) {
+		if (Objects.isNull(instance)) {
 			instance = new UserService();
 		}
 		return instance;
@@ -40,7 +38,8 @@ public class UserService {
 	}
 		
 	public Bet makeBet(Bet bet) {
-		Race race = administratorService.getStartedRace(bet.getRaceID());
+		Race race = factory.getAdministratorService().getStartedRace(bet.getRaceID());
+		//UNCOMMENT
 //		if (race.getRaceResults().keySet().stream()
 //				.noneMatch(h -> h.getName().equals(bet.getHorseName()))) {
 //			throw new RuntimeException(String.format("Horse with name %s not present in race", bet.getHorseName()));			
@@ -71,10 +70,10 @@ public class UserService {
 	public int calculateWinnings(int betID) throws Exception {
 		Bet bet = getOrThrowOnEmptyOptional(
 				daoFactory.getBetDAO().getBetByID(betID));
-		Race race = administratorService.getFinishedRace(bet.getRaceID());
+		Race race = factory.getAdministratorService().getFinishedRace(bet.getRaceID());
 		
 		winOrException(bet, race);
-		Coefficients coefficients = bookmakerService.getCoefficients(bet.getRaceID());
+		Coefficients coefficients = factory.getBookmakerService().getCoefficients(bet.getRaceID());
 		double horseCoefficient = coefficients.getValues()
 				.get(race.getRaceResults().keySet().stream()
 						.filter(h -> h.getName().equals(bet.getHorseName()))

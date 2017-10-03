@@ -39,7 +39,7 @@
 				<c:if test="${not empty errors['coefficients']}">
 					<tr>
 						<td colspan="2">
-							<c:out value="${errors['coefficients']}"></c:out>
+							<span><c:out value="${errors['coefficients']}"></c:out></span>
 						</td>
 					</tr>
 				</c:if>		

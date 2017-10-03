@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.commands.Command;
-import ua.training.project4.controller.commands.Validation;
 import ua.training.project4.model.service.UserService;
+import static ua.training.project4.view.Constants.*;
 
 public class WinningsMessage extends Command {
 	
@@ -19,21 +19,20 @@ public class WinningsMessage extends Command {
 
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		Validation v = Validation.getInstance();
-		ValidationResult vresult = v.checkBetID(req, result);
-		return vresult;
+		return result.checkRaceID(req);
 	}
 	
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
-		int betID = (int) validValues.get("betID");
+		int betID = (int) validValues.get(BET_ID);
+		//Get message why winnings cannot be received
 		try {
 			int winnings = userService.calculateWinnings(betID);
-			req.setAttribute("winnings", winnings);
+			req.setAttribute(WINNINGS_AMOUNT, winnings);
 		} catch (Exception e) {
-			req.setAttribute("message", e.getMessage());			
+			req.setAttribute(WINNINGS_MESSAGE, e.getMessage());			
 		}
 		//Forward to message page
 	}

@@ -63,6 +63,7 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 	public Optional<Coefficients> getByRaceID(int raceID) {
 		Optional<Coefficients> result = Optional.empty();
 		try (Connection conn = connectionPool.getConnection()) {
+			Coefficients coefficients = new Coefficients();
 			PreparedStatement ps = conn.prepareStatement(GET_BY_RACE_ID);
 			ps.setInt(1, raceID);
             ResultSet rs = ps.executeQuery();
@@ -70,12 +71,14 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
             Horse horse;
             while(rs.next()){
             	if (rs.isFirst()) {
-					result.get().setRaceID(rs.getInt(RaceDAOImpl.ID_FIELD));
+					coefficients.setRaceID(rs.getInt(RaceDAOImpl.ID_FIELD));
 				}
             	horse = HorseDAOImpl.extractHorseFromResultSet(rs);
+            	//Returns 0.0 on null column 
 	            values.put(horse, rs.getDouble(COEF_FIELD));
             }
-            result.get().setValues(values);
+            coefficients.setValues(values);
+            result = Optional.of(coefficients);
         } catch (SQLException ex){
         	ex.printStackTrace();
         	//LOGs

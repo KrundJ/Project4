@@ -1,5 +1,6 @@
 package ua.training.project4.model.service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import ua.training.project4.model.dao.DAOFactory;
@@ -16,7 +17,7 @@ public class AuthService {
 	}
 			
 	public static AuthService getInstance() {
-		if (instance == null) {
+		if (Objects.isNull(instance)) {
 			instance = new AuthService();
 		}
 		return instance;

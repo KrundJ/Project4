@@ -1,6 +1,8 @@
 package ua.training.project4.view;
 
 import java.util.Map;
+import java.util.Objects;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -46,7 +48,7 @@ public class RaceResults extends TagSupport {
 				out.println("<td>");
 					out.println("<select name=\"" + i + "\">");
 					for (Horse h : results.keySet()) {
-						if (selection != null && selection.values().contains(h.getName())
+						if (Objects.nonNull(selection) && selection.values().contains(h.getName())
 								&& h.getName().equals(selection.get(i))) {
 							out.println(String.format("<option value=\"%s\" selected=\"selected\">%s</option>", h.getName(),
 									h.getName()));

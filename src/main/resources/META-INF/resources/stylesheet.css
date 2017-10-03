@@ -3,8 +3,10 @@
 .container {
 	overflow-y: hidden;
 	width: 100%;
+	/*
 	border: solid;
 	border-color: black;
+	*/
 }
 
 .topDiv {
@@ -13,8 +15,10 @@
 	margin: 0 0;
 	z-index: 1;
 	line-height: 30px;
+	/*
 	border: solid;
 	border-color: yellow;
+	*/
 }
 
 .topBar {
@@ -25,15 +29,19 @@
 .topBar.left {
 	text-align: left;
 	float: left;
+	/*
 	border: solid;
 	border-color: green;
+	*/
 }
 
 .topBar.right {
 	text-align: right;
 	float: right;
+	/*
 	border: solid;
 	border-color: red;
+	*/
 }
 
 .content {
@@ -43,8 +51,10 @@
 	width: 90%;
 	text-align: center;
 	overflow: auto;
+	/*
 	border: solid;
 	border-color: pink;
+	*/
 }
 
 .tableCenter {

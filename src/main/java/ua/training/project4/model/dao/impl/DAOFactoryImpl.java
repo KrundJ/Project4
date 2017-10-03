@@ -1,5 +1,7 @@
 package ua.training.project4.model.dao.impl;
 
+import java.util.Objects;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import ua.training.project4.Config;
@@ -16,7 +18,7 @@ public class DAOFactoryImpl extends DAOFactory {
 
 	private BasicDataSource getConnectionPool()  {
 		
-	    if (connectionPool == null) {
+	    if (Objects.isNull(connectionPool)) {
 	    	Config config = Config.getInstance(); 
 	        BasicDataSource pool = new BasicDataSource();
 	        pool.setUrl(config.getUrl());

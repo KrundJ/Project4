@@ -11,33 +11,8 @@
 </head>
 <body>
 	<div class="container">
-		<div class="topDiv">
-			<div class="topBar left"></div>
-
-			<div class="topBar right">
-				<form action="/app/administrator" method="get"
-					enctype="application/x-www-form-urlencoded">
-					<table style="border: solid; border-color: black; float: right;">
-						<tr>
-							<td>
-								<c:if test="${lang eq 'en'}">
-									<c:set value="selected=\"\"" var="selectedEn"></c:set>
-								</c:if> <c:if test="${lang eq 'ru'}">
-									<c:set value="selected=\"\"" var="selectedRu"></c:set>
-								</c:if> <select name="new_lang">
-									<option value="en" ${selectedEn}>English(US)</option>
-									<option value="ru" ${selectedRu}>Russian</option>
-							</select></td>
-							<td><input type="submit" value="Change"></td>
-						</tr>
-					</table>
-				</form>
-			</div>
-		</div>
-
 		<div class="content">
 			<h2>Races:</h2>
-
 			<table border="1" class="tableCenter">
 				<tr>
 					<th>Distance:</th>

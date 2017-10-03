@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.project4.controller.commands.Command;
 import ua.training.project4.model.service.AdministratorService;
 import ua.training.project4.model.service.BookmakerService;
+import static ua.training.project4.view.Constants.*;
 
 public class ShowBookmakerControlls extends Command {
 	
@@ -22,7 +23,7 @@ public class ShowBookmakerControlls extends Command {
 	protected void peformAction(HttpServletRequest req, 
 				HttpServletResponse resp, Map<String, Object> validValues) {
 		
-		req.setAttribute("races", administratorService.getAllRaces());
-		req.setAttribute("coefficients", bookmakerService.getCoefficientsForAllRaces());
+		req.setAttribute(RACES, administratorService.getAllRaces());
+		req.setAttribute(COEFFICIENTS, bookmakerService.getCoefficientsForAllRaces());
 	}
 }

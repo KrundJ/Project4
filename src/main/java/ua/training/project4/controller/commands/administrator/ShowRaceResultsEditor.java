@@ -1,15 +1,13 @@
 package ua.training.project4.controller.commands.administrator;
 
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import ua.training.project4.controller.commands.Command;
-import ua.training.project4.controller.commands.Validation;
-import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.service.AdministratorService;
-import ua.training.project4.model.service.HorseService;
+import static ua.training.project4.view.Constants.*;
 
 public class ShowRaceResultsEditor extends Command {
 	
@@ -19,9 +17,13 @@ public class ShowRaceResultsEditor extends Command {
 		super(successPage);
 	}
 	
+	public static void setRequestAttributes(HttpServletRequest req, Race race) {
+		req.setAttribute(RACE, race);
+	}
+	
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		return Validation.getInstance().checkRaceID(req, result);
+		return result.checkRaceID(req);
 	}
 	
 	@Override
@@ -29,7 +31,7 @@ public class ShowRaceResultsEditor extends Command {
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
 		Race race = administratorService
-				.getRaceForSettingResults((int) validValues.get("raceID"));
-		req.setAttribute("race", race);
+				.getStartedRace((int) validValues.get(RACE_ID));
+		setRequestAttributes(req, race);
 	}
 }

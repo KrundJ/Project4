@@ -1,5 +1,6 @@
 package ua.training.project4.view;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.servlet.jsp.JspException;
@@ -54,10 +55,10 @@ public class HorsesInRace extends TagSupport {
 				out.println("<tr>");
 				for (int j = 1; j <= ITEMS_IN_ROW; j++) {
 					out.println("<td>");
-						out.println("<select name=\"horse\">");
+						out.println("<select name=\"horseNames\">");
 						boolean selectionSet = false;
 						for (Horse h : allHorses) {
-							if (horsesInRace != null && horsesInRace.contains(h) && !selectionSet) {
+							if (Objects.nonNull(horsesInRace) && horsesInRace.contains(h) && !selectionSet) {
 								out.println(String.format("<option value=\"%s\" selected=\"selected\">%s</option>",
 										h.getName(), h.getName()));
 								horsesInRace.remove(h);

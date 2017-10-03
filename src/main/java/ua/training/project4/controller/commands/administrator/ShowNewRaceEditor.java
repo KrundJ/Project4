@@ -2,13 +2,14 @@ package ua.training.project4.controller.commands.administrator;
 
 import java.util.Map;
 import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.commands.Command;
 import ua.training.project4.model.entities.Horse;
-import ua.training.project4.model.service.AdministratorService;
 import ua.training.project4.model.service.HorseService;
+import static ua.training.project4.view.Constants.*;
 
 public class ShowNewRaceEditor extends Command {
 	
@@ -18,13 +19,17 @@ public class ShowNewRaceEditor extends Command {
 		super(successPage);
 	}
 
+	public static void setRequestAttributes(HttpServletRequest req, Set<Horse> horses) {
+		req.setAttribute(HORSES, horses);
+		req.setAttribute(COMMAND_URL, "/app/administrator/new");
+		req.setAttribute(TITLE_KEY, "admin.newrace.title");
+	}
+	
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 				HttpServletResponse resp, Map<String, Object> validValues) {
 
 		Set<Horse> horses = horseService.getAllHorses();
-		req.setAttribute("horses", horses);
-		req.setAttribute("commandURL", "/app/administrator/new");
-		req.setAttribute("titleKey", "admin.newrace.title");
+		setRequestAttributes(req, horses);
 	}
 }

@@ -34,7 +34,7 @@ class Auth {
 	private static Auth instance = null;
 	
 	public static Auth getInstance() {
-		if (instance == null) {
+		if (Objects.isNull(instance)) {
 			instance = new Auth();
 		}
 		return instance;

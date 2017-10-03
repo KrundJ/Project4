@@ -2,6 +2,7 @@ package ua.training.project4.model.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,8 +20,8 @@ import ua.training.project4.model.entities.Race.RaceState;
 
 public class BookmakerService {
 	
-	private AdministratorService administratorService = AdministratorService.getInstance();
-	
+	private ServiceFactory factory = ServiceFactory.getInstance();
+
 	private static BookmakerService instance;
 	
 	private DAOFactory daoFactory;
@@ -30,7 +31,7 @@ public class BookmakerService {
 	}
 			
 	public static BookmakerService getInstance() {
-		if (instance == null) {
+		if (Objects.isNull(instance)) {
 			instance = new BookmakerService();
 		}
 		return instance;
@@ -57,7 +58,7 @@ public class BookmakerService {
 	}
 	
 	private Coefficients createCoefficients(int raceID, Map<String, Double> horseNameAndValue) {		
-		Race race = administratorService.getPlannedRace(raceID);
+		Race race = factory.getAdministratorService().getPlannedRace(raceID);
 		
 		horseNameAndValue.keySet().stream()
 		.filter(name -> (! race.getRaceResults().keySet().stream()

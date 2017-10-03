@@ -20,11 +20,9 @@
 <body>
 
 	<div class="content">
-		<fmt:message key="${titleKey}" var="title" />
-
-		<h1>
-			<c:out value="${ title }"></c:out>
-		</h1>
+		
+		<h1><fmt:message key="${titleKey}"/></h1>
+		
 		<form accept-charset="UTF-8" action="${commandURL}" method="post"
 			enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
@@ -36,8 +34,8 @@
 				</tr>
 				<tr>
 					<td align="center">
-						<c:if test="${not empty raceToEdit}">
-							<c:set var="distance" value="${raceToEdit.distance}"></c:set>
+						<c:if test="${not empty race}">
+							<c:set var="distance" value="${race.distance}"></c:set>
 						</c:if> 
 						<select name="distance">
 							<c:if test="${distance eq 'RACE_ON_1600m'}">
@@ -61,8 +59,8 @@
 						</c:if>
 					</td>
 					<td align="center">
-						<c:if test="${not empty raceToEdit}">
-							<c:set var="date" value="${raceToEdit.date}"></c:set>
+						<c:if test="${not empty race}">
+							<c:set var="date" value="${race.date}"></c:set>
 						</c:if> 
 						<input type="text" value="<fmt:formatDate value="${date}" dateStyle="MEDIUM"/>" name="date" placeholder="${dateFormat}" size="9" /> 
 						<c:if test="${not empty errors['date']}">
@@ -81,7 +79,7 @@
 					</td>
 				</tr>
 
-				<cus:horsesInRace allHorses="${horses}" raceToEdit="${raceToEdit}" />
+				<cus:horsesInRace allHorses="${horses}" raceToEdit="${race}" />
 
 			</table>
 		</form>
