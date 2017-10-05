@@ -55,7 +55,7 @@ public abstract class Command {
 				validValues.put(DISTANCE, distance);
 			} catch (Exception e) {
 				System.err.println("Invalid distance");
-				errorMessages.put(DISTANCE, "Invalid value: " + req.getParameter(DISTANCE)); 
+				errorMessages.put(DISTANCE, "Invalid value"); 
 			}
 			return this;
 		}
@@ -69,7 +69,7 @@ public abstract class Command {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("Invalid date");
-				errorMessages.put(DATE, "Invalid value: " + req.getParameter(DATE)); 
+				errorMessages.put(DATE, "Invalid date"); 
 			}
 			return this;
 		}

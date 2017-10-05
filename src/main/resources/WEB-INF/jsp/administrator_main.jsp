@@ -2,11 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="/WEB-INF/mytags.tld" prefix="mm" %>
 <%@ taglib uri="/WEB-INF/raceResultsSortedOutput.tld" prefix="cus" %>   
 <%@ page session="true" %>
 
-<c:set var="language" value="${sessionScope.locale.getLanguage()}"></c:set>
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="ua.training.project4.messages"/>
 
@@ -20,17 +19,19 @@
 <body>	
 	<div class="container">
 		<div class="content">
-			<h2><fmt:message key="jsp.admin.main.title"/></h2>
+			<h2><fmt:message key="jsp.admin.title"/></h2>
 			<h4>
-				<a href="/app/administrator/new">Create a new race</a>
+				<a href="/app/administrator/new">
+					<fmt:message key="jsp.admin.new"/>
+				</a>
 			</h4>
 			<table border="1" class="tableCenter">
 				<tr>
-					<th>Distance:</th>
-					<th>Results:</th>
-					<th>State:</th>
-					<th>Date:</th>
-					<th>Action:</th>
+					<th><fmt:message key="jsp.raceParameters.distance"/></th>
+					<th><fmt:message key="jsp.raceParameters.results"/></th>
+					<th><fmt:message key="jsp.raceParameters.state"/></th>
+					<th><fmt:message key="jsp.raceParameters.date"/></th>
+					<th><fmt:message key="jsp.admin.action"/></th>
 				</tr>
 				<c:forEach items="${races}" var="race">
 					<tr>
@@ -43,10 +44,10 @@
 							</c:if>
 						</td>
 						<td>
-							${race.state}
+							<c:out value="${race.state}"></c:out> 
 						</td>
-						<td>
-							${race.date}
+						<td> 
+							<fmt:formatDate value="${race.date}" dateStyle="MEDIUM"/>
 						</td>
 						<td>
 							<script type="text/javascript">
@@ -68,12 +69,12 @@
 								}
 							</script> 
 							<select onchange="action(this.value);">
-								<option value="">None</option>
-								<option value="/app/administrator/start:${race.ID}">Start</option>
-								<option value="/app/administrator/finish:${race.ID}">Finish</option>
-								<option value="/app/administrator/edit:${race.ID}">Edit</option>
-								<option value="/app/administrator/delete:${race.ID}">Delete</option>
-								<option value="/app/administrator/results:${race.ID}">Set results</option>	
+								<option value=""><fmt:message key="jsp.admin.action.none"/></option>
+								<option value="/app/administrator/start:${race.ID}"><fmt:message key="jsp.admin.action.start"/></option>
+								<option value="/app/administrator/finish:${race.ID}"><fmt:message key="jsp.admin.action.finish"/></option>
+								<option value="/app/administrator/edit:${race.ID}"><fmt:message key="jsp.admin.action.edit"/></option>
+								<option value="/app/administrator/delete:${race.ID}"><fmt:message key="jsp.admin.action.delete"/></option>
+								<option value="/app/administrator/results:${race.ID}"><fmt:message key="jsp.admin.action.setResults"/></option>	
 							</select>
 						</td>
 					</tr>

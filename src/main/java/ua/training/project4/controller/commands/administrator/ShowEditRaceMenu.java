@@ -26,10 +26,10 @@ public class ShowEditRaceMenu extends Command {
 			Set<Horse> horses, Race raceToEdit) {
 		req.setAttribute(HORSES, horses);
 		req.setAttribute(RACE, raceToEdit);
-		//MOVE TO JSP
-		req.setAttribute(COMMAND_URL, "/app/administrator/edit");
-		//MOVE TO JSP
-		req.setAttribute(TITLE_KEY, "admin.editrace.title");
+//		//MOVE TO JSP
+//		req.setAttribute(COMMAND_URL, "/app/administrator/edit");
+//		//MOVE TO JSP
+//		req.setAttribute(TITLE_KEY, "admin.editrace.title");
 	}
 	
 	@Override

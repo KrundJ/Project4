@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -13,16 +18,16 @@
 <body>
 	<div class="content">
 		
-		<h1>Make Bet</h1>
+		<h1><fmt:message key="jsp.betEditor.title"/></h1>
 		 		 		
 		<form accept-charset="UTF-8" action="/app/bet" method="post" enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
 				<tr>
 					<td>
-						<b>Type:</b>
+						<b><fmt:message key="jsp.betParameters.type"/></b>
 					</td>
 					<td>
-						<b>Horse:</b>
+						<b><fmt:message key="jsp.betParameters.horse"/></b>
 					</td>
 					<td>
 						<select name="horseName">
@@ -38,9 +43,9 @@
 				</tr>
 				<tr>
 					<td rowspan="3" align="left">
-						<input type="radio" name="betType" value="WIN_BET" checked="checked">Win bet<br>
-						<input type="radio" name="betType" value="PLACE_BET">Place bet<br>
-						<input type="radio" name="betType" value="SHOW_BET">Show bet
+						<input type="radio" name="betType" value="WIN_BET" checked="checked"><fmt:message key="jsp.betParameters.type.win"/><br>
+						<input type="radio" name="betType" value="PLACE_BET"><fmt:message key="jsp.betParameters.type.place"/><br>
+						<input type="radio" name="betType" value="SHOW_BET"><fmt:message key="jsp.betParameters.type.show"/>
 						
 						<c:if test="${not empty errors['betType']}">
 							<br>
@@ -50,7 +55,7 @@
 				</tr>
 				<tr>
 					<td>
-						<b>Amount:</b>
+						<b><fmt:message key="jsp.betParameters.amount"/></b>
 					</td>
 					<td>
 						<input type="text" name="betAmount" size="10"/>
@@ -65,7 +70,7 @@
 						<!-- EMPTY -->
 					</td>
 					<td>
-						<input type="submit" value="Make Bet"/>
+						<input type="submit" value="<fmt:message key="jsp.betEditor.submit"/>"/>
 						<input type="hidden" name="raceID" value="${race.ID}"/> 
 					</td>
 				</tr>

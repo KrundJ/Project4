@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,13 +16,13 @@
 </head>
 <body>
 	<div class="content">
-		<h1>Your bet is accepted</h1>
+		<h1><fmt:message key="jsp.betSuccessful.title"/></h1>
 		
-		<h4>Bet ID: <c:out value="${bet.ID}"></c:out></h4>	
-		<h4>Amount: <c:out value="${bet.amount}"></c:out></h4>
-		<h4>Race ID: <c:out value="${bet.raceID}"></c:out></h4>
-		<h4>Horse: <c:out value="${bet.horseName}"></c:out></h4>
-		<h4>Bet type: <c:out value="${bet.betType.name().toLowerCase().replace('_', ' ')}"></c:out></h4>
+		<h4><fmt:message key="jsp.betParameters.ID"/> <c:out value="${bet.ID}"></c:out></h4>	
+		<h4><fmt:message key="jsp.betParameters.amount"/> <c:out value="${bet.amount}"></c:out></h4>
+		<h4><fmt:message key="jsp.betParameters.raceID"/> <c:out value="${bet.raceID}"></c:out></h4>
+		<h4><fmt:message key="jsp.betParameters.horse"/> <c:out value="${bet.horseName}"></c:out></h4>
+		<h4><fmt:message key="jsp.betParameters.type"/> <c:out value="${bet.betType.name().toLowerCase().replace('_', ' ')}"></c:out></h4>
 	</div>
 </body>
 </html>

@@ -13,27 +13,34 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>New Race</title>
+<title>Race Editor</title>
 <link rel="stylesheet" type="text/css" href="/stylesheet.css">
 </head>
 <body>
 
 	<div class="content">
-		
-		<h1><fmt:message key="${titleKey}"/></h1>
-		
-		<form accept-charset="UTF-8" action="${commandURL}" method="post"
+	
+		<c:choose>
+			<c:when test="${requestScope['javax.servlet.forward.request_uri'] eq '/app/administrator/new'}">
+				<h1><fmt:message key="jsp.raceEditor.new.title"/></h1>
+			</c:when>
+			<c:otherwise>
+				<h1><fmt:message key="jsp.raceEditor.edit.title"/></h1>
+			</c:otherwise>
+		</c:choose>
+				
+		<form accept-charset="UTF-8" action="${requestScope['javax.servlet.forward.request_uri']}" method="post"
 			enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
 				<tr>
 					<td align="center">
-						<b>Distance:</b>
+						<b><fmt:message key="jsp.raceParameters.distance"/></b>
 					</td>
 					<td align="center">
-						<b>Date:</b>
+						<b><fmt:message key="jsp.raceParameters.date"/></b>
 					</td>
 					<td rowspan="2" align="center">
-						<input type="submit" value="Create"/>
+						<input type="submit" value="<fmt:message key="jsp.raceEditor.submit"/>"/>
 						<c:if test="${not empty race}">
 							<input type="hidden" name="raceID" value="${race.ID}">
 						</c:if>

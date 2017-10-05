@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,20 +17,20 @@
 <body>
 	<div class="container">
 		<div class="content">
-			<h2>Races:</h2>
+			<h2><fmt:message key="jsp.bookmaker.title"/></h2>
 			<table border="1" class="tableCenter">
 				<tr>
-					<th>Distance:</th>
-					<th>Horses and Jockeys:</th>
-					<th>Coefficients:</th>
-					<th>State:</th>
-					<th>Date:</th>
-					<th>Action:</th>
+					<th><fmt:message key="jsp.raceParameters.distance"/></th>
+					<th><fmt:message key="jsp.raceParameters.horseJockey"/></th>
+					<th><fmt:message key="jsp.raceParameters.coefficients"/></th>
+					<th><fmt:message key="jsp.raceParameters.state"/></th>
+					<th><fmt:message key="jsp.raceParameters.date"/></th>
+					<th><fmt:message key="jsp.bookmaker.action"/></th>
 				</tr>
 				<c:forEach items="${races}" var="race">
 					<tr>
 						<td>
-							${race.distance.getDistance()}
+							<c:out value="${race.distance.getDistance()}"></c:out> 
 						</td>
 						<td>
 							<c:forEach var="entry" items="${race.raceResults}">
@@ -45,13 +50,13 @@
 							</c:forEach>
 						</td>
 						<td>
-							${race.state}
+							<c:out value="${race.state}"></c:out> 
 						</td>
 						<td>
-							${race.date}
+							<fmt:formatDate value="${race.date}"/> 
 						</td>
 						<td>
-							<button form="editForm" type="submit" name="raceID" value="${race.ID}">Set or edit</button>
+							<button form="editForm" type="submit" name="raceID" value="${race.ID}"><fmt:message var="jsp.bookmaker.setOrEdit"/></button>
 						</td>
 					</tr>
 				</c:forEach>
