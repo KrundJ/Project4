@@ -44,12 +44,16 @@ public class BookmakerService {
 		return coefOptional.get();
 	}
 	
-	public List<Coefficients> getCoefficientsForAllRaces() {
-		return daoFactory.getCoefficientsDAO().getCoefficientsForAllRaces();
-	}
+//	public List<Coefficients> getCoefficientsForAllRaces() {
+//		return daoFactory.getCoefficientsDAO().getCoefficientsForAllRaces();
+//	}
 	
 	public List<Coefficients> getCoefficientsForCurrentRaces() {
 		return daoFactory.getCoefficientsDAO().getCoefficientsForCurrentRaces();
+	}
+	
+	public List<Coefficients> getCoefficientsForPlannedRaces() {
+		return daoFactory.getCoefficientsDAO().getCoefficientsForPlannedRaces();
 	}
 	
 	public Coefficients getCoefficients(int raceID) {

@@ -68,7 +68,7 @@ public class AdministratorService {
 		
 	public void deletePlannedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-//		throwIfNotPlanned(race, "Can't delete race with state " + race.getState());		
+		throwIfNotPlanned(race, "Can't delete race with state " + race.getState());		
 		daoFactory.getRaceDAO().delete(raceID);
 	}
 		
@@ -100,7 +100,7 @@ public class AdministratorService {
 	
 	public void saveRaceResults(int raceID, Map<Integer, String> raceResults) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-//		throwIfNotStarted(race, "Error race in state " + race.getState());
+		throwIfNotStarted(race, "Error race in state " + race.getState());
 		Set<Horse> horsesInResults = factory.getHorseService().getHorsesByNames(
 				raceResults.values().stream().toArray(String[]::new));
 		if (! race.getRaceResults().keySet().containsAll(horsesInResults)) {
@@ -119,13 +119,13 @@ public class AdministratorService {
 	
 	public Race getStartedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-//		throwIfNotStarted(race, "Error race in state " + race.getState());		
+		throwIfNotStarted(race, "Error race in state " + race.getState());		
 		return race;
 	}
 	
 	public Race getPlannedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID);
-//		throwIfNotPlanned(race, "Error race in state " + race.getState());		
+		throwIfNotPlanned(race, "Error race in state " + race.getState());		
 		return race;
 	}
 
@@ -142,4 +142,12 @@ public class AdministratorService {
 	public List<Race> getCurrentRaces() {	
 		return daoFactory.getRaceDAO().getCurrentRaces();
 	}
+	
+	public List<Race> getPlannedRaces() {	
+		return daoFactory.getRaceDAO().getPlannedRaces();
+	}
+	
+//	public List<Race> getRacesWithoutCoefficients() {	
+//		return daoFactory.getRaceDAO().getRacesWithoutCoefficients();
+//	}
 }

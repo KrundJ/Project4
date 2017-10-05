@@ -37,5 +37,4 @@ public class SetRaceResults extends Command {
 		//Set status code for redirect
 		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}
-
 }

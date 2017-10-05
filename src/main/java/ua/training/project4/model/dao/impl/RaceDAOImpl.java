@@ -53,14 +53,23 @@ public class RaceDAOImpl implements RaceDAO {
             + "ON horses.h_jockey = jockeys.j_id "
 			+ "ORDER BY races.r_id";
 	
-	private static final String GET_CURRENT_RACES = "SELECT horses.h_name, horses.h_number, horses_races.h_place, "
+	private static final String GET_RACES_WITH_STATE = "SELECT horses.h_name, horses.h_number, horses_races.h_place, "
 			+ "races.r_id, races.r_distance, races.r_state, races.r_date, jockeys.j_name "   
 			+ "FROM horses JOIN horses_races "     
 			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "             
 			+ "ON horses_races.r_id = races.r_id LEFT JOIN jockeys "    
             + "ON horses.h_jockey = jockeys.j_id "
-			+ "WHERE races.r_state = 'FINISHED' "
+			+ "WHERE races.r_state = '%s' "
 			+ "ORDER BY races.r_id";
+	
+//	private static final String GET_RACES_WITHOUT_COEFF = "SELECT horses.h_name, horses.h_number, horses_races.h_place, "
+//			+ "races.r_id, races.r_distance, races.r_state, races.r_date, jockeys.j_name "   
+//			+ "FROM horses JOIN horses_races "     
+//			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "             
+//			+ "ON horses_races.r_id = races.r_id LEFT JOIN jockeys "    
+//            + "ON horses.h_jockey = jockeys.j_id "
+//			+ "WHERE horses_races.h_coefficient IS NULL "
+//			+ "ORDER BY races.r_id";
 	
 	private static final String UPDATE_RACE = "UPDATE races JOIN horses_races "
 			+ "ON races.r_id = horses_races.r_id  "
@@ -121,8 +130,20 @@ public class RaceDAOImpl implements RaceDAO {
 	
 	@Override
 	public List<Race> getCurrentRaces() {
-		return getListOfRaces(GET_CURRENT_RACES);
+		return getListOfRaces(
+				String.format(GET_RACES_WITH_STATE, RaceState.STARTED.name()));
 	}
+	
+	@Override
+	public List<Race> getPlannedRaces() {
+		return getListOfRaces(
+				String.format(GET_RACES_WITH_STATE, RaceState.PLANNED.name()));
+	}
+	
+//	@Override
+//	public List<Race> getRacesWithoutCoefficients() {
+//		return getListOfRaces(GET_RACES_WITHOUT_COEFF);
+//	}
 
 	@Override
 	public void create(Race item) {

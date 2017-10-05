@@ -39,11 +39,10 @@ public class UserService {
 		
 	public Bet makeBet(Bet bet) {
 		Race race = factory.getAdministratorService().getStartedRace(bet.getRaceID());
-		//UNCOMMENT
-//		if (race.getRaceResults().keySet().stream()
-//				.noneMatch(h -> h.getName().equals(bet.getHorseName()))) {
-//			throw new RuntimeException(String.format("Horse with name %s not present in race", bet.getHorseName()));			
-//		}
+		if (race.getRaceResults().keySet().stream()
+				.noneMatch(h -> h.getName().equals(bet.getHorseName()))) {
+			throw new RuntimeException(String.format("Horse with name %s not present in race", bet.getHorseName()));			
+		}
 		return getOrThrowOnEmptyOptional(
 				daoFactory.getBetDAO().create(bet));
 	}

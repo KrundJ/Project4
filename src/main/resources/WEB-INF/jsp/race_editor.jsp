@@ -5,7 +5,6 @@
 
 <%@ taglib prefix="cus" uri="/WEB-INF/horsesInRace.tld" %>
 		
-		<%--locale set in command, request parameter --%>
 <c:set var="language" value="${locale.getLanguage()}"></c:set>
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="ua.training.project4.messages"/>
@@ -27,10 +26,18 @@
 			enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
 				<tr>
-					<td align="center"><b>Distance:</b></td>
-					<td align="center"><b>Date:</b></td>
-					<td rowspan="2" align="center"><input type="submit"
-						value="Create" /></td>
+					<td align="center">
+						<b>Distance:</b>
+					</td>
+					<td align="center">
+						<b>Date:</b>
+					</td>
+					<td rowspan="2" align="center">
+						<input type="submit" value="Create"/>
+						<c:if test="${not empty race}">
+							<input type="hidden" name="raceID" value="${race.ID}">
+						</c:if>
+					</td>
 				</tr>
 				<tr>
 					<td align="center">
@@ -62,7 +69,16 @@
 						<c:if test="${not empty race}">
 							<c:set var="date" value="${race.date}"></c:set>
 						</c:if> 
-						<input type="text" value="<fmt:formatDate value="${date}" dateStyle="MEDIUM"/>" name="date" placeholder="${dateFormat}" size="9" /> 
+						
+						<c:choose>
+							<c:when test="${language eq 'en'}">
+								<c:set var="datePattern" value="Jan 23, 1996"></c:set>
+							</c:when>
+							<c:otherwise>
+								<c:set var="datePattern" value="23.01.1996"></c:set>
+							</c:otherwise>
+						</c:choose>
+						<input type="text" value="<fmt:formatDate value="${date}" dateStyle="MEDIUM"/>" name="date" placeholder="${datePattern}" size="9" /> 
 						<c:if test="${not empty errors['date']}">
 							<br>
 							<span><c:out value="${errors['date']}"></c:out></span>
@@ -72,15 +88,15 @@
 				<tr>
 					<td colspan="3" align="center">
 						<b>Horses:</b> 
-						<c:if test="${not empty errors['horse']}">
+						<c:if test="${not empty errors['horseNames']}">
 							<br>
-							<span><c:out value="${errors['horse']}"></c:out></span>
+							<span><c:out value="${errors['horseNames']}"></c:out></span>
 						</c:if>
 					</td>
 				</tr>
-
+				
 				<cus:horsesInRace allHorses="${horses}" raceToEdit="${race}" />
-
+				
 			</table>
 		</form>
 	</div>

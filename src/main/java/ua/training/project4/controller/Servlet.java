@@ -109,9 +109,10 @@ public class Servlet extends HttpServlet {
 		m.matches();
 		Command command = commands.get(method + ":" + m.group(1));
 		if (command == null) {
-			throw new RuntimeException("Command not found");
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+		} else {
+			command.execute(req, resp);
 		}
-		command.execute(req, resp);
 	}
 
 	@Override

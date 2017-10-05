@@ -35,18 +35,18 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			+ "ON horses.h_jockey = jockeys.j_id "
             + "WHERE horses_races.r_id = ?";
 	
-	private static final String GET_FOR_ALL_RACES = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
-			+ "FROM horses JOIN horses_races "     
-			+ "ON horses.h_name = horses_races.h_name LEFT JOIN jockeys "
-			+ "ON horses.h_jockey = jockeys.j_id "
-			+ "ORDER BY horses_races.r_id";
+//	private static final String GET_FOR_ALL_RACES = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
+//			+ "FROM horses JOIN horses_races "     
+//			+ "ON horses.h_name = horses_races.h_name LEFT JOIN jockeys "
+//			+ "ON horses.h_jockey = jockeys.j_id "
+//			+ "ORDER BY horses_races.r_id";
 	
-	private static final String GET_FOR_CURRENT_RACES = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
+	private static final String GET_FOR_RACES_WITH_STATE = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
 			+ "FROM horses JOIN horses_races "      
 			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "
             + "ON horses_races.r_id = races.r_id LEFT JOIN jockeys " 
 			+ "ON horses.h_jockey = jockeys.j_id " 
-            + "WHERE races.r_state = 'FINISHED' "
+            + "WHERE races.r_state = '%s' "
 			+ "ORDER BY horses_races.r_id";
        
 	private static final String UPDATE = "UPDATE horses_races " 
@@ -116,14 +116,21 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 		return result;
 	}
 
-	@Override
-	public List<Coefficients> getCoefficientsForAllRaces() {
-		return getListOfCoefficients(GET_FOR_ALL_RACES);
-	}
+//	@Override
+//	public List<Coefficients> getCoefficientsForAllRaces() {
+//		return getListOfCoefficients(GET_FOR_ALL_RACES);
+//	}
 	
 	@Override
 	public List<Coefficients> getCoefficientsForCurrentRaces() {
-		return getListOfCoefficients(GET_FOR_CURRENT_RACES);
+		return getListOfCoefficients(
+				String.format(GET_FOR_RACES_WITH_STATE, RaceState.STARTED.name()));
+	}
+	
+	@Override
+	public List<Coefficients> getCoefficientsForPlannedRaces() {
+		return getListOfCoefficients(
+				String.format(GET_FOR_RACES_WITH_STATE, RaceState.PLANNED.name()));
 	}
 
 	@Override

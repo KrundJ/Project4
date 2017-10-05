@@ -2,6 +2,7 @@ package ua.training.project4.view;
 
 public final class Constants {
 	
+	//JSP
 	public static final String LOCALE = "locale";
 	
 	public static final String RACE_ID = "raceID";
@@ -43,6 +44,10 @@ public final class Constants {
 	public static final String LOGIN_MAIN_ERROR = "loginPassDontMatch";
 	
 	public static final String REGISTRATION_MAIN_ERROR = "userExisits";
+	
+	//ERROR MESSAGES
+	public static final String ERROR_INVALID_ID = "userExisits";
+	
 		
 	//MESSAGE BUNDLE
 	public static final String TITLE_KEY = "titleKey";

@@ -13,6 +13,8 @@ public interface RaceDAO {
 	
 	public List<Race> getCurrentRaces();
 	
+	public List<Race> getPlannedRaces();
+	
 	public void delete(int id);
 	
 	public void create(Race item);

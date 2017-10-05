@@ -1,9 +1,5 @@
 package ua.training.project4.model.service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,12 +27,7 @@ public class HorseService {
 		return daoFactory.getHorseDAO().getAllHorses();
 	}
 	
-	public Set<Horse> getHorsesByNames(String... horseNames) {
-		Set<String> namesSet = new HashSet<>(Arrays.asList(horseNames));
-//in validation result		
-//		if (horseNames.length != namesSet.size()) {
-//			throw new IllegalArgumentException("Horse names must be different");
-//		}
+	public Set<Horse> getHorsesByNames(String... horseNames) {		
 		return daoFactory.getHorseDAO().getHorsesByNames(horseNames);
 	}
 	

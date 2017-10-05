@@ -22,7 +22,8 @@ public class ShowBookmakerControlls extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 				HttpServletResponse resp, Map<String, Object> validValues) {	
-		req.setAttribute(RACES, administratorService.getAllRaces());
-		req.setAttribute(COEFFICIENTS, bookmakerService.getCoefficientsForAllRaces());
+		req.setAttribute(RACES, administratorService.getPlannedRaces());
+		req.setAttribute(COEFFICIENTS, 
+				bookmakerService.getCoefficientsForPlannedRaces());
 	}
 }

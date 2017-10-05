@@ -67,6 +67,7 @@ public abstract class Command {
 				Date date = df.parse(req.getParameter(DATE)); 
 				validValues.put(DATE, date);
 			} catch (Exception e) {
+				e.printStackTrace();
 				System.err.println("Invalid date");
 				errorMessages.put(DATE, "Invalid value: " + req.getParameter(DATE)); 
 			}
@@ -94,7 +95,7 @@ public abstract class Command {
 				String[] horseNames = req.getParameterValues(HORSE_NAMES);
 				if (horseNames.length != Race.NUMBER_OF_HORSES_IN_RACE) throw new Exception();
 				if (horseNames.length != new HashSet<>(Arrays.asList(horseNames)).size()) {
-					throw new IllegalArgumentException();
+					throw new Exception();
 				}
 				validValues.put(HORSE_NAMES, horseNames);
 			} catch (Exception e) {

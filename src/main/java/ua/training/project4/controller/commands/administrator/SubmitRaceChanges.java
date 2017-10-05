@@ -48,12 +48,14 @@ public class SubmitRaceChanges extends Command {
 				validValues.get(HORSE_NAMES)).forEach(h -> raceResults.put(h, null));
 		
 		Race race = Race.builder()
+				.ID((int) validValues.get(RACE_ID))
 				.raceResults(raceResults)
 				.date((Date) validValues.get(DATE))
 				.distance((RaceDistance) validValues.get(DISTANCE))
 				.state(RaceState.PLANNED).build();
-
+		System.out.println(race);
 		administratorService.saveRaceChanges(race);
+		System.out.println("UPDATE RACE!!!!!");
 		//Set status code for redirect
 		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}

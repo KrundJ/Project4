@@ -9,9 +9,11 @@ public interface CoefficientsDAO {
 
 	public Optional<Coefficients> getByRaceID(int raceID);
 	
-	public List<Coefficients> getCoefficientsForAllRaces();
+	//public List<Coefficients> getCoefficientsForAllRaces();
 	
 	public List<Coefficients> getCoefficientsForCurrentRaces();
+	
+	public List<Coefficients> getCoefficientsForPlannedRaces();
 
 	public void setCoefficients(Coefficients coef);
 }
