@@ -32,7 +32,6 @@ public class ShowCoefficientsEditor extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-		
 		int raceID = (int) validValues.get(RACE_ID);
 		Coefficients coefficients = bookmakerService.getCoefficients(raceID);
 		setRequestAttributes(req, coefficients, raceID);

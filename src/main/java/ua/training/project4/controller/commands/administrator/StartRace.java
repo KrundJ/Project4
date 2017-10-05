@@ -23,7 +23,8 @@ public class StartRace extends Command {
 	}
 	
 	@Override
-	protected void peformAction(HttpServletRequest req, HttpServletResponse resp, Map<String, Object> validValues) {
+	protected void peformAction(HttpServletRequest req, 
+			HttpServletResponse resp, Map<String, Object> validValues) {
 		administratorService.startRace((int) validValues.get(RACE_ID));
 		//Set status code for redirect
 		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);

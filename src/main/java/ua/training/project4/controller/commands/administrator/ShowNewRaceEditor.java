@@ -28,7 +28,6 @@ public class ShowNewRaceEditor extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 				HttpServletResponse resp, Map<String, Object> validValues) {
-
 		Set<Horse> horses = horseService.getAllHorses();
 		setRequestAttributes(req, horses);
 	}

@@ -1,4 +1,0 @@
-/*
-* USE BACK SLASH IN WINDOWS
-*/
-mvn install:install-file -Dfile=lib/mysql-connector-java-5.1.39.jar -DgroupId=com.mysql -DartifactId=mysq-connector -Dversion=5.1.39 -Dpackaging=jar

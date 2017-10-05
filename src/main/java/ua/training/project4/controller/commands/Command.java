@@ -17,15 +17,23 @@ import javax.servlet.http.HttpServletResponse;
 import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Bet.BetType;
 import ua.training.project4.model.entities.Race.RaceDistance;
+import ua.training.project4.model.service.AuthService;
+
 import static ua.training.project4.view.Constants.*;
 
 public abstract class Command {
 	
 	protected class ValidationResult {
 		
+		private static final String LOGIN_PATTERN = "^\\w{5,10}$";
+		
+		private static final String PASSWORD_PATTERN = "^[\\da-zA-Z]{5,10}$";
+					
 		private Map<String, String> errorMessages;
 		private Map<String, Object> validValues;
 
+		private boolean isInvalid = false;
+		
 		public ValidationResult() {
 			this.errorMessages = new HashMap<>();
 			this.validValues = new HashMap<>();
@@ -151,9 +159,41 @@ public abstract class Command {
 			}
 			return this;
 		}
-
+		
+		public ValidationResult checkLogin(HttpServletRequest req) {
+			try {
+				String login = req.getParameter(LOGIN);
+				if(! login.matches(LOGIN_PATTERN)) throw new Exception();
+				validValues.put(LOGIN, login);
+			} catch (Exception e) {
+				System.err.println("Invalid login");
+				errorMessages.put(LOGIN, "Invalid login"); 
+			}
+			return this;
+		}
+		
+		public ValidationResult checkPassword(HttpServletRequest req) {
+			try {
+				String password = req.getParameter(PASSWORD);
+				if(! password.matches(PASSWORD_PATTERN)) throw new Exception();
+				validValues.put(PASSWORD, password);
+			} catch (Exception e) {
+				System.err.println("Invalid password");
+				errorMessages.put(PASSWORD, "Invalid password"); 
+			}
+			return this;
+		}
+				
 		public boolean hasErrors() {
-			return (! errorMessages.isEmpty());
+			return (! errorMessages.isEmpty()) || isInvalid ;
+		}
+		//manually make result invalid, without any messages
+		public void makeInvalid() {
+			isInvalid = true;
+		}
+		
+		public void makeInvalid(String messageKey, String text) {
+			errorMessages.put(messageKey, text);
 		}
 		
 		public Map<String, String> getErrorMessages() {
@@ -184,7 +224,7 @@ public abstract class Command {
 	protected String getFailPage() {
 		return failPage;
 	}
-	
+		
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
 		return result;
 	}
@@ -193,8 +233,7 @@ public abstract class Command {
 			HttpServletResponse resp, Map<String, Object> validValues);
 
 	public final void execute(HttpServletRequest req, HttpServletResponse resp) 
-				throws IOException, ServletException {
-
+				throws IOException, ServletException {		
 		ValidationResult result = validateInput(req, new ValidationResult());		
 		if (result.hasErrors()) {
 			req.setAttribute("errors", result.getErrorMessages());

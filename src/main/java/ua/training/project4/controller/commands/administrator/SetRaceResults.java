@@ -20,7 +20,6 @@ public class SetRaceResults extends Command {
 	
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		
 		result.checkRaceID(req).checkRaceResults(req);
 		if (result.hasErrors()) {
 			Race race = administratorService.getStartedRace((int) result.getValidValues().get(RACE_ID));
@@ -32,7 +31,6 @@ public class SetRaceResults extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-		
 		administratorService.saveRaceResults(
 				(int) validValues.get(RACE_ID), 
 				(Map<Integer, String>) validValues.get(RACE_RESULTS)); 

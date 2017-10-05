@@ -29,8 +29,7 @@ public class ShowBetEditor extends Command {
 
 	@Override
 	protected void peformAction(HttpServletRequest req, 
-			HttpServletResponse resp, Map<String, Object> validValues) {
-		
+			HttpServletResponse resp, Map<String, Object> validValues) {	
 		int raceID = (int) validValues.get(RACE_ID);
 		setRequestAttributes(req, administratorService.getStartedRace(raceID));
 	}

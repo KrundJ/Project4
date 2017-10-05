@@ -20,7 +20,6 @@ public class SetOrEditCoefficients extends Command {
 	
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-			
 		result.checkRaceID(req).checkCoefficients(req);
 		if (result.hasErrors()) {
 			int raceID = (int) result.getValidValues().get(RACE_ID);
@@ -33,7 +32,6 @@ public class SetOrEditCoefficients extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-		
 		int raceID = (int) validValues.get(RACE_ID);
 		Map<String, Double> coefficients = (Map<String, Double>) validValues.get(COEFFICIENTS);
 		bookmakerService.setCoefficiets(raceID, coefficients);

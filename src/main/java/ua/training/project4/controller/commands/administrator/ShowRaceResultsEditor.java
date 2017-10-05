@@ -29,7 +29,6 @@ public class ShowRaceResultsEditor extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-		
 		Race race = administratorService
 				.getStartedRace((int) validValues.get(RACE_ID));
 		setRequestAttributes(req, race);

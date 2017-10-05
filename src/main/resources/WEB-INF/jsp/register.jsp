@@ -6,21 +6,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Login</title>
+<title>Register</title>
 <link rel="stylesheet" type="text/css" href="/stylesheet.css">
 </head>
 <body>
 	<div class="content">
 	
 		<a href="/" style="font-weight: 600">Main</a>
-
-		<div class="formDiv">	
-			<form action="/app/login" method="post" enctype="application/x-www-form-urlencoded"
+		
+		<div class="formDiv">
+			<form action="/app/register" method="post" enctype="application/x-www-form-urlencoded"
 				accept-charset="UTF-8">
 			<table style="border:solid; border-color: black; border-width: 4px;">
 				<tr>
 					<td colspan="2" align="center">
-						<h4>Login</h4>
+						<h4>Register</h4>
 					</td>
 				</tr>
 				<tr>
@@ -29,6 +29,10 @@
 					</td>
 					<td align="center">
 						<input type="text" name="login"/>
+						<c:if test="${not empty errors['login']}">
+							<br>
+							<span><c:out value="${errors['login']}"></c:out></span>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -37,18 +41,15 @@
 					</td>
 					<td align="center">
 						<input type="password" name="password"/>
-						<c:if test="${not empty errors}">
+						<c:if test="${not empty errors['password']}">
 							<br>
-							<span>Login or password incorrect</span>
+							<span><c:out value="${errors['password']}"></c:out></span>
 						</c:if>
 					</td>
 				</tr>
 				<tr>
 					<td align="right">
-						<input type="submit" value="Login"/>
-					</td>
-					<td align="right">
-						<a href="/app/register" style="font-weight: 600">Register</a>
+						<input type="submit" value="Register"/>
 					</td>
 				</tr>
 			</table>

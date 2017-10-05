@@ -21,8 +21,7 @@ public class ShowCurrentRaces extends Command {
 
 	@Override
 	protected void peformAction(HttpServletRequest req, 
-			HttpServletResponse resp, Map<String, Object> validValues) {
-		
+			HttpServletResponse resp, Map<String, Object> validValues) {	
 		req.setAttribute(RACES, administratorService.getCurrentRaces());
 		req.setAttribute(COEFFICIENTS, bookmakerService.getCoefficientsForCurrentRaces());
 	}

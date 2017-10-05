@@ -37,6 +37,7 @@ public class SetLocale extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
+		
 		Locale loc = getLocaleOrUS(req.getParameter("new_lang"));
 		req.getSession().setAttribute("locale", loc);
 		req.getSession().setAttribute("dateFormat", 

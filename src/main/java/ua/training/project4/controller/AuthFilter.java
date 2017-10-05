@@ -16,19 +16,17 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.taglibs.standard.lang.jstl.BooleanLiteral;
+
 import ua.training.project4.model.dao.DAOFactory;
 import ua.training.project4.model.entities.User;
 import ua.training.project4.model.entities.User.Role;
 import ua.training.project4.model.service.AuthService;
 
 class Auth {
-	
-	private AuthService authService = AuthService.getInstance();
-	
+			
 	private Map<String, Role> permissions = new HashMap<>();
-	
-	private String pattern;
-	
+			
 	private Auth() {}
 	
 	private static Auth instance = null;
@@ -40,63 +38,44 @@ class Auth {
 		return instance;
 	}
 				
-	public Auth urlPattern(String pattern) {
-		this.permissions.put(pattern, null); 
-		this.pattern = pattern;
-		return this;
-	}
-	
-	public Auth hasRole(Role role) {
-		this.permissions.put(pattern, role);
+	public Auth addConstraint(String pattern, Role role) {
+		permissions.put(pattern, role);
 		return this;
 	}
 	
 	public ServletResponse check(ServletRequest req, ServletResponse resp) throws IOException {
+		
 		for (Map.Entry<String, Role> entry : permissions.entrySet()) {
 			if (((HttpServletRequest) req).getRequestURI().matches(entry.getKey()) 
 							&& Objects.nonNull(entry.getValue())) {
 				
-				Principal p = ((HttpServletRequest) req).getUserPrincipal();
-				if (p == null) {
+				Role userRole = (Role) ((HttpServletRequest) req)
+						.getSession().getAttribute(AuthFilter.ROLE_ATTR);
+				if (Objects.isNull(userRole)) {
 					//login
-					System.out.println("Auth redirect");
 					((HttpServletResponse) resp).sendRedirect("/app/login");
 					return resp;
-				}
-				User user = authService.getUserByLogin(p.getName());
-				if (user.getRole().equals(entry.getValue())) {
+				}			
+				if (userRole.equals(entry.getValue())) {
 					//OK
-					System.out.println("Auth match");
 					return resp;
 				} else {
 					//403
-					System.out.println("Auth forbidden");
 					((HttpServletResponse) resp).sendError(HttpServletResponse.SC_FORBIDDEN);
 					return resp;
 				}
 			}
 		}
-		//OK
-		System.out.println("Auth allowed");
+		//Allow all
 		return resp;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Total entries: " + permissions.size());
-		sb.append("\n");
-		for (Map.Entry<String, Role> e: permissions.entrySet()) {
-			sb.append("[urlPattern=" + e.getKey() + ", requireRole=" + e.getValue() + "]");
-			sb.append("\n");
-		}
-		return sb.toString();
 	}
 }
 
 public class AuthFilter implements Filter {
 	
 	private Auth auth;
+	
+	public static final String ROLE_ATTR = "role";
 	
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		System.out.println("auth");
@@ -111,7 +90,9 @@ public class AuthFilter implements Filter {
 	
 	public void init(FilterConfig fConfig) throws ServletException {
 		 auth = Auth.getInstance()
-				 .urlPattern("/app/administrator").hasRole(Role.ADMINISTRATOR)
-				 .urlPattern("/app/bookmaker").hasRole(Role.BOOKMAKER);
+				 .addConstraint("^/app/administrator.*", Role.ADMINISTRATOR)
+				 .addConstraint("^/app/bookmaker.*", Role.BOOKMAKER)
+		 		 .addConstraint("^/app/bet", Role.USER)
+		 		 .addConstraint("^/app/winnings", Role.USER);
 	}	
 }

@@ -28,7 +28,6 @@ public class SubmitRaceChanges extends Command {
 	
 	@Override
 	public ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		
 		result.checkRaceID(req).checkRaceDistance(req)
 			.checkDate(req).checkHorseNames(req);
 		
@@ -43,8 +42,7 @@ public class SubmitRaceChanges extends Command {
 
 	@Override
 	protected void peformAction(HttpServletRequest req, 
-			HttpServletResponse resp, Map<String, Object> validValues) {
-		
+			HttpServletResponse resp, Map<String, Object> validValues) {		
 		Map<Horse, Integer> raceResults = new HashMap<>();
 		horseService.getHorsesByNames((String[]) 
 				validValues.get(HORSE_NAMES)).forEach(h -> raceResults.put(h, null));

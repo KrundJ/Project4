@@ -18,7 +18,7 @@ public class DeleteRace extends Command {
 	}
 
 	@Override
-	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
+	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {		
 		return result.checkRaceID(req);
 	}
 

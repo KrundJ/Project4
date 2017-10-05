@@ -25,14 +25,13 @@ public class WinningsMessage extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-		
 		int betID = (int) validValues.get(BET_ID);
 		//Get message why winnings cannot be received
 		try {
 			int winnings = userService.calculateWinnings(betID);
 			req.setAttribute(WINNINGS_AMOUNT, winnings);
 		} catch (Exception e) {
-			req.setAttribute(WINNINGS_MESSAGE, e.getMessage());			
+			req.setAttribute(MESSAGE, e.getMessage());			
 		}
 		//Forward to message page
 	}

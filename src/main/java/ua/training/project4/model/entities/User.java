@@ -13,7 +13,7 @@ public class User {
 	
 	private String login;
 	
-	private String passHash;
+	private String password;
 		
 	private Role role;
 	

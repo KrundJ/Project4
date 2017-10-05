@@ -5,9 +5,10 @@ import java.util.Optional;
 
 import ua.training.project4.model.dao.DAOFactory;
 import ua.training.project4.model.entities.User;
+import ua.training.project4.model.entities.User.Role;
 
 public class AuthService {
-	
+			
 	private static AuthService instance;
 	
 	private DAOFactory daoFactory;
@@ -23,19 +24,29 @@ public class AuthService {
 		return instance;
 	}
 	
-	private User getOrThrowOnEmptyOptional(Optional<User> userOptional) {
-		if (! userOptional.isPresent()) {
-			throw new RuntimeException("Add message here");
-		}
-		return userOptional.get();
+	public Optional<User> getUserByLogin(String login) {
+		return daoFactory.getUserDAO().getByLogin(login);
 	}
 	
-	public User getUserByLogin(String login) {
-		return getOrThrowOnEmptyOptional(
-				daoFactory.getUserDAO().getByLogin(login));
+	public void addUser(String login, String password) {
+		if (! isLoginUnique(login)) 
+			throw new RuntimeException("User with login " + login + " exists");
+		daoFactory.getUserDAO().create(
+				User.builder()
+				.login(login)
+				.password(password)
+				.role(Role.USER).build());
 	}
 	
-	public void addUser(User user) {
-		daoFactory.getUserDAO().create(user);
+	public boolean isLoginUnique(String login) {
+		Optional<User> user = daoFactory.getUserDAO().getByLogin(login);
+		return (! user.isPresent());
+	}
+	
+	public boolean checkUserCredentials(String login, String password) {
+		Optional<User> user = getUserByLogin(login);
+		if (! user.isPresent()) 
+			return false;
+		return (user.get().getPassword().equals(password)) ? true : false;
 	}
 }

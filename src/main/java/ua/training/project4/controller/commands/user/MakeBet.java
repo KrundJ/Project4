@@ -24,7 +24,6 @@ public class MakeBet extends Command {
 	
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-	
 		result.checkRaceID(req).checkHorseName(req)
 			.checkBetAmount(req).checkBetType(req);
 		if (result.hasErrors()) {
@@ -37,7 +36,6 @@ public class MakeBet extends Command {
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
-
 		Bet bet = userService.makeBet(
 				Bet.builder()
 				.raceID((int) validValues.get(RACE_ID))

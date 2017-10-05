@@ -34,7 +34,15 @@ public final class Constants {
 	
 	public static final String WINNINGS_AMOUNT = "winningsAmount";
 	
-	public static final String WINNINGS_MESSAGE = "winningsMessage";
+	public static final String MESSAGE = "message";
+	
+	public static final String LOGIN = "login";
+	
+	public static final String PASSWORD = "password";
+	
+	public static final String LOGIN_MAIN_ERROR = "loginPassDontMatch";
+	
+	public static final String REGISTRATION_MAIN_ERROR = "userExisits";
 		
 	//MESSAGE BUNDLE
 	public static final String TITLE_KEY = "titleKey";
@@ -42,3 +50,4 @@ public final class Constants {
 	
 	private Constants() {}
 }
+

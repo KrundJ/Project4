@@ -48,15 +48,15 @@ public class Servlet extends HttpServlet {
 		commands.put("POST:/locale", 
 	   			new SetLocale("/"));
 		commands.put("GET:/login", 
-	   			new ShowLoginForm("/WEB-INF/jsp/login.jsp"));
+	   			new ShowLoginForm("/WEB-INF/jsp/login.jsp", "/"));
 		commands.put("POST:/login", 
 	   			new Login("/", "/WEB-INF/jsp/login.jsp"));
 		commands.put("GET:/register", 
-	   			new ShowRegisterForm("/WEB-INF/jsp/register.jsp"));
+	   			new ShowRegisterForm("/WEB-INF/jsp/register.jsp", "/"));
 		commands.put("POST:/register", 
-	   			new Register("/", "/WEB-INF/jsp/register.jsp"));
+	   			new Register("/WEB-INF/jsp/message.jsp", "/WEB-INF/jsp/register.jsp"));
 		commands.put("POST:/logout", 
-	   			new Logout("/"));
+	   			new Logout("/WEB-INF/jsp/message.jsp", "/"));
 	   	//ADMINISTRATOR
 	   	commands.put("GET:/administrator", 
 	   			new ShowAdministratorControls("/WEB-INF/jsp/administrator_main.jsp"));
@@ -98,7 +98,7 @@ public class Servlet extends HttpServlet {
 		commands.put("GET:/winnings", 
 				new ShowWinningsForm("/WEB-INF/jsp/winnings_form.jsp"));
 		commands.put("POST:/winnings", 
-				new WinningsMessage("/WEB-INF/jsp/winnings_message.jsp")); 
+				new WinningsMessage("/WEB-INF/jsp/message.jsp")); 
 	}
 	
 	private void findCommandAndExecute(HttpServletRequest req, HttpServletResponse resp) 
@@ -124,7 +124,6 @@ public class Servlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 					throws ServletException, IOException {
-		
 		System.out.println("received GET");
 		findCommandAndExecute(req, resp);
 	}

@@ -9,6 +9,19 @@
 	*/
 }
 
+.formDiv {
+	margin: 10% auto; 
+	padding-left: 40%; 
+}
+
+.messageDiv {
+	margin: 10% auto; 
+	width: 600px;
+	overflow-wrap: break-word;
+	font-size: x-large;
+	font-weight: 600;
+}
+
 .topDiv {
 	height: 150px;
 	padding: 0 0;
