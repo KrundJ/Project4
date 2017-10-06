@@ -29,8 +29,6 @@ public class AuthService {
 	}
 	
 	public void addUser(String login, String password) {
-		if (! isLoginUnique(login)) 
-			throw new RuntimeException("User with login " + login + " exists");
 		daoFactory.getUserDAO().create(
 				User.builder()
 				.login(login)

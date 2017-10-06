@@ -1,6 +1,11 @@
 package ua.training.project4;
 
+import static ua.training.project4.view.Constants.COEFFICIENTS;
+import static ua.training.project4.view.Constants.RACE_ID;
+
 import java.util.Arrays;
+import java.util.Currency;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -81,13 +86,16 @@ public class TEST {
 //		}.start();
 		
 		
+		
 //		Optional<Integer> i = Optional.ofNullable(null);
 //		System.out.println(i.orElseThrow(RuntimeException::new));
 
 		//System.out.println(DAOFactory.getInstance().getBetDAO().getBetByID(2000));
 		
 		
-		//Locale l = Locale.forLanguageTag("uk-UA");
+//		Locale l = Locale.forLanguageTag("uk-UA");
+//		Currency c = Currency.getInstance(l);
+//		System.out.println(c.getSymbol());
 //		Locale l = Locale.forLanguageTag("dfafsaf");
 //		
 //		for(Locale l2 : Locale.getAvailableLocales()) {

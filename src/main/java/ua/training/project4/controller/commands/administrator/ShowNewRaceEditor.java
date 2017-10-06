@@ -21,8 +21,6 @@ public class ShowNewRaceEditor extends Command {
 
 	public static void setRequestAttributes(HttpServletRequest req, Set<Horse> horses) {
 		req.setAttribute(HORSES, horses);
-		req.setAttribute(COMMAND_URL, "/app/administrator/new");
-		req.setAttribute(TITLE_KEY, "admin.newrace.title");
 	}
 	
 	@Override

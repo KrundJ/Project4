@@ -5,7 +5,7 @@
 
 <%@ taglib prefix="cus" uri="/WEB-INF/raceResults.tld" %>
   
-    		<%--locale set in command, request parameter --%>
+    		
 <c:set var="language" value="${locale.getLanguage()}"></c:set>
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="ua.training.project4.messages"/>
@@ -20,13 +20,13 @@
 <body>
 	<div class="content">
 		
-		<h1>Race Results</h1>
+		<h1><fmt:message key="jsp.raceResultsEditor.title"/></h1>
 		 		 		
 		<form accept-charset="UTF-8" action="/app/administrator/results" method="post" enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
 				<tr>
-					<th align="center">Place:</td>
-					<th align="center">Horse:</td>
+					<th align="center"><fmt:message key="jsp.betParameters.place"/></td>
+					<th align="center"><fmt:message key="jsp.raceResultsParameters.horse"/></td>
 				</tr>
 
 				<cus:raceResults results="${race.raceResults}" selection="${selection}" />
@@ -40,7 +40,7 @@
 				</c:if>
 				<tr>
 					<td colspan="2">
-						<input type="submit" value="Sumbit"/>
+						<input type="submit" value="<fmt:message key="jsp.raceResultsEditor.submit"/>"/>
 						<input type="hidden" name="raceID" value="${race.ID}"/> 
 					</td>
 				</tr>

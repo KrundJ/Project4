@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,7 +17,7 @@
 <body>
 	<div class="content">
 	
-		<a href="/" style="font-weight: 600">Main</a>
+		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		
 		<div class="formDiv">
 			<form action="/app/register" method="post" enctype="application/x-www-form-urlencoded"
@@ -20,12 +25,12 @@
 			<table style="border:solid; border-color: black; border-width: 4px;">
 				<tr>
 					<td colspan="2" align="center">
-						<h4>Register</h4>
+						<h4><fmt:message key="jsp.register.title"/></h4>
 					</td>
 				</tr>
 				<tr>
 					<td align="center">
-						Login:
+						<fmt:message key="jsp.authParameters.login"/>
 					</td>
 					<td align="center">
 						<input type="text" name="login"/>
@@ -37,7 +42,7 @@
 				</tr>
 				<tr>
 					<td align="center">
-						Password:
+						<fmt:message key="jsp.authParameters.password"/>
 					</td>
 					<td align="center">
 						<input type="password" name="password"/>
@@ -45,11 +50,15 @@
 							<br>
 							<span><c:out value="${errors['password']}"></c:out></span>
 						</c:if>
+						<c:if test="${not empty errors['userExisits']}">
+							<br>
+							<span><fmt:message key="${errors['userExisits']}"/></span>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
 					<td align="right">
-						<input type="submit" value="Register"/>
+						<input type="submit" value="<fmt:message key="jsp.register.submit"/>"/>
 					</td>
 				</tr>
 			</table>

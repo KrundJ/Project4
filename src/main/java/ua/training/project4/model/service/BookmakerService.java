@@ -4,19 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import ua.training.project4.model.dao.BetDAO;
 import ua.training.project4.model.dao.DAOFactory;
-import ua.training.project4.model.entities.Bet;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
-import ua.training.project4.model.entities.User;
-import ua.training.project4.model.entities.Race.RaceState;
-
+import static ua.training.project4.view.Constants.*;
 
 public class BookmakerService {
 	
@@ -39,14 +33,10 @@ public class BookmakerService {
 	
 	private Coefficients getOrThrowOnEmptyOptional(Optional<Coefficients> coefOptional) {
 		if (! coefOptional.isPresent()) {
-			throw new RuntimeException("Add message here");
+			throw new RuntimeException(COEFFICIENTS_NOT_FOUND);
 		}
 		return coefOptional.get();
 	}
-	
-//	public List<Coefficients> getCoefficientsForAllRaces() {
-//		return daoFactory.getCoefficientsDAO().getCoefficientsForAllRaces();
-//	}
 	
 	public List<Coefficients> getCoefficientsForCurrentRaces() {
 		return daoFactory.getCoefficientsDAO().getCoefficientsForCurrentRaces();
@@ -67,7 +57,7 @@ public class BookmakerService {
 		horseNameAndValue.keySet().stream()
 		.filter(name -> (! race.getRaceResults().keySet().stream()
 			.map(Horse::getName).collect(Collectors.toSet()).contains(name)))
-		.findAny().ifPresent(name -> { throw new RuntimeException("Horse with name " + name + "not in current race"); });
+		.findAny().ifPresent(name -> { throw new RuntimeException(HORSE_NOT_IN_RACE); });
 		
 		Map<Horse, Double> values = race.getRaceResults()
 				.keySet().stream()

@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
- <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+    pageEncoding="UTF-8"%>    
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,7 +20,7 @@
 			<table border="1" class="tableCenter">
 				<tr>
 					<th align="center">
-						Please, enter bet ID
+						<fmt:message key="jsp.winnings.title"/>
 					</th>
 				</tr>
 				<tr>
@@ -29,7 +34,7 @@
 				</tr>
 				<tr>
 					<td align="center">
-						<input type="submit" value="Submit"/>
+						<input type="submit" value="<fmt:message key="jsp.winnings.submit"/>"/>
 					</td>
 				</tr>
 			</table>

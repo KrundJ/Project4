@@ -3,6 +3,7 @@ package ua.training.project4.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -108,7 +109,7 @@ public class Servlet extends HttpServlet {
 		Matcher m = actionPattern.matcher(path);
 		m.matches();
 		Command command = commands.get(method + ":" + m.group(1));
-		if (command == null) {
+		if (Objects.isNull(command)) {
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 		} else {
 			command.execute(req, resp);

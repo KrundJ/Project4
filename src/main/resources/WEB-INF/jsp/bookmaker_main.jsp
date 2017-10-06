@@ -18,6 +18,7 @@
 	<div class="container">
 		<div class="content">
 			<h2><fmt:message key="jsp.bookmaker.title"/></h2>
+			
 			<table border="1" class="tableCenter">
 				<tr>
 					<th><fmt:message key="jsp.raceParameters.distance"/></th>
@@ -27,8 +28,9 @@
 					<th><fmt:message key="jsp.raceParameters.date"/></th>
 					<th><fmt:message key="jsp.bookmaker.action"/></th>
 				</tr>
+			
 				<c:forEach items="${races}" var="race">
-					<tr>
+					<tr>	
 						<td>
 							<c:out value="${race.distance.getDistance()}"></c:out> 
 						</td>
@@ -55,10 +57,14 @@
 						<td>
 							<fmt:formatDate value="${race.date}"/> 
 						</td>
+					
 						<td>
-							<button form="editForm" type="submit" name="raceID" value="${race.ID}"><fmt:message var="jsp.bookmaker.setOrEdit"/></button>
+							<button form="editForm" type="submit" name="raceID" value="${race.ID}">
+								<fmt:message key="jsp.bookmaker.setOrEdit"/>
+							</button>
 						</td>
 					</tr>
+				
 				</c:forEach>
 				<form id="editForm" method="get" action="/app/bookmaker/edit"></form>
 			</table>

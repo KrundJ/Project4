@@ -232,10 +232,9 @@ public class RaceDAOImpl implements RaceDAO {
 	            raceResults.put(horse, rs.getInt(PLACE_FIELD));
 			}
 			race.get().setRaceResults(raceResults);
-        } catch (SQLException ex){
-        	ex.printStackTrace();
+        } catch (Exception ex){
         	//LOG
-        	throw new RuntimeException();
+        	//throw new RuntimeException();
         }
 		return race;
 	}

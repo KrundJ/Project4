@@ -1,15 +1,12 @@
 package ua.training.project4.controller.commands;
 
-import static ua.training.project4.view.Constants.LOGIN;
-import static ua.training.project4.view.Constants.PASSWORD;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.model.service.AuthService;
-import ua.training.project4.view.Constants;
+import static ua.training.project4.view.Constants.*;
 
 public class Register extends Command {
 	
@@ -26,7 +23,7 @@ public class Register extends Command {
 			return result;
 		if (! authService.isLoginUnique(
 				(String) result.getValidValues().get(LOGIN))) {
-			result.makeInvalid();
+			result.makeInvalid(REGISTRATION_MAIN_ERROR, REGISTRATION_ERROR_MSG);
 		}
 		return result;
 	}
@@ -37,6 +34,6 @@ public class Register extends Command {
 		authService.addUser(
 				(String) validValues.get(LOGIN), 
 				(String) validValues.get(PASSWORD));
-		req.setAttribute(Constants.MESSAGE, "Registration sucessfull");
+		req.setAttribute(MESSAGE, REGISTRATION_SUCCESS_MSG);
 	}
 }

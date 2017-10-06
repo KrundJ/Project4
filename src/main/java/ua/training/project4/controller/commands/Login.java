@@ -28,7 +28,7 @@ public class Login extends Command {
 		if (! authService.checkUserCredentials(
 				(String) result.getValidValues().get(LOGIN), 
 				(String) result.getValidValues().get(PASSWORD))) {
-			result.makeInvalid(LOGIN_MAIN_ERROR, null);
+			result.makeInvalid(LOGIN_MAIN_ERROR, LOGIN_ERROR_MSG);
 		}
 		return result;
 	}

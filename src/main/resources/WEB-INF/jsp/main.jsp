@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+    pageEncoding="UTF-8"%>    
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${locale.getLanguage()}"></c:set>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="ua.training.project4.messages"/>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,18 +17,23 @@
 <body>
 	<div class="container">
 		<div class="content">
-			<h2>Current races:</h2>
+			<h2><fmt:message key="jsp.main.title"/></h2>
+			<h4>
+				<a href="/app/winnings">
+					<fmt:message key="jsp.main.winnings"/>
+				</a>
+			</h4>
 			<table border="1" class="tableCenter">
 				<tr>
-					<th>Distance:</th>
-					<th>Horses and Jockeys:</th>
-					<th>Coefficients:</th>
-					<th>Action:</th>
+					<th><fmt:message key="jsp.raceParameters.distance"/></th>
+					<th><fmt:message key="jsp.raceParameters.horseJockey"/></th>
+					<th><fmt:message key="jsp.raceParameters.coefficients"/></th>
+					<th><fmt:message key="jsp.main.action"/></th>
 				</tr>
 				<c:forEach items="${races}" var="race">		
 					<tr>
 						<td>
-							${race.distance.getDistance()}
+							<c:out value="${race.distance.getDistance()}"/> 
 						</td>
 						<td>
 							<c:forEach var="entry" items="${race.raceResults}">
@@ -43,7 +53,7 @@
 							</c:forEach>
 						</td>
 						<td>
-							<button form="actionForm" type="submit" name="raceID" value="${race.ID}">Make bet</button>
+							<button form="actionForm" type="submit" name="raceID" value="${race.ID}"><fmt:message key="jsp.betEditor.submit"/></button>
 						</td>
 					</tr>
 				</c:forEach>

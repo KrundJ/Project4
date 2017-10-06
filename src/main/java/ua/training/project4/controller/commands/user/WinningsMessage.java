@@ -19,19 +19,18 @@ public class WinningsMessage extends Command {
 
 	@Override
 	protected ValidationResult validateInput(HttpServletRequest req, ValidationResult result) {
-		return result.checkRaceID(req);
+		return result.checkBetID(req);
 	}
 	
 	@Override
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		int betID = (int) validValues.get(BET_ID);
-		//Get message why winnings cannot be received
 		try {
-			int winnings = userService.calculateWinnings(betID);
-			req.setAttribute(WINNINGS_AMOUNT, winnings);
+			req.setAttribute(MESSAGE, new Integer(userService.calculateWinnings(betID)).toString());
+			req.setAttribute(MESSAGE_TO_FORMAT, WINNINGS_MESSAGE);
 		} catch (Exception e) {
-			req.setAttribute(MESSAGE, e.getMessage());			
+			req.setAttribute(MESSAGE, e.getMessage());
 		}
 		//Forward to message page
 	}

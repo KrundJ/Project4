@@ -1,21 +1,18 @@
 package ua.training.project4.model.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import ua.training.project4.model.dao.DAOFactory;
-import ua.training.project4.model.dao.RaceDAO;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
-import ua.training.project4.model.entities.Race.RaceDistance;
 import ua.training.project4.model.entities.Race.RaceState;
+import static ua.training.project4.view.Constants.*;
 
 public class AdministratorService {
 
@@ -39,26 +36,26 @@ public class AdministratorService {
 	private Race getOrThrowOnEmptyOptional(int raceID) {
 		Optional<Race> raceOptional = daoFactory.getRaceDAO().getRaceByID(raceID);
 		if (! raceOptional.isPresent()) {
-			throw new RuntimeException();
+			throw new ServiceException(RACE_NOT_FOUND, new Integer(raceID).toString());
 		}
 		return raceOptional.get();
 	}
 	
 	private void throwIfNotPlanned(Race race, String message) {
 		if (! race.getState().equals(RaceState.PLANNED)) {
-			throw new IllegalStateException(message);
+			throw new ServiceException(message, race.getState().name());
 		}		
 	}
 	
 	private void throwIfNotStarted(Race race, String message) {
 		if (! race.getState().equals(RaceState.STARTED)) {
-			throw new IllegalStateException(message);
+			throw new ServiceException(message, race.getState().name());
 		}		
 	}
 	
 	private void throwIfNotFinished(Race race, String message) {
 		if (! race.getState().equals(RaceState.FINISHED)) {
-			throw new IllegalStateException(message);
+			throw new ServiceException(message, race.getState().name());
 		}		
 	}
 		
@@ -68,20 +65,16 @@ public class AdministratorService {
 		
 	public void deletePlannedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-		throwIfNotPlanned(race, "Can't delete race with state " + race.getState());		
+		throwIfNotPlanned(race, DELETE_ERROR);		
 		daoFactory.getRaceDAO().delete(raceID);
 	}
 		
 	public void startRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-		throwIfNotPlanned(race, "Can't start race with state " + race.getState());
+		throwIfNotPlanned(race, START_ERROR);
 		Coefficients coef = factory.getBookmakerService().getCoefficients(raceID);
-		for (Entry<Horse, Double> c : coef.getValues().entrySet()) {
-			System.out.println(c.getKey());
-			System.out.println(c.getValue());
-		}
 		if (coef.getValues().containsValue(0.0)) {
-			throw new RuntimeException("Can't start race, coefficients not set"); 
+			throw new RuntimeException(NO_COEFFICIENTS); 
 		}
 		race.setState(RaceState.STARTED);
 		daoFactory.getRaceDAO().update(race);
@@ -89,7 +82,7 @@ public class AdministratorService {
 	
 	public void finishRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-		throwIfNotStarted(race, "Can't finish race with state " + race.getState());
+		throwIfNotStarted(race, FINISH_ERROR);
 		race.setState(RaceState.FINISHED);
 		daoFactory.getRaceDAO().update(race);
 	}
@@ -100,11 +93,11 @@ public class AdministratorService {
 	
 	public void saveRaceResults(int raceID, Map<Integer, String> raceResults) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-		throwIfNotStarted(race, "Error race in state " + race.getState());
+		throwIfNotStarted(race, INVALID_STATE);
 		Set<Horse> horsesInResults = factory.getHorseService().getHorsesByNames(
 				raceResults.values().stream().toArray(String[]::new));
 		if (! race.getRaceResults().keySet().containsAll(horsesInResults)) {
-			throw new RuntimeException("Some horses not present in race");
+			throw new RuntimeException(HORSE_NOT_IN_RACE);
 		}
 		
 		Map<Horse, Integer> results = raceResults.entrySet().stream()
@@ -119,19 +112,19 @@ public class AdministratorService {
 	
 	public Race getStartedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID); 
-		throwIfNotStarted(race, "Error race in state " + race.getState());		
+		throwIfNotStarted(race, INVALID_STATE);		
 		return race;
 	}
 	
 	public Race getPlannedRace(int raceID) {
 		Race race = getOrThrowOnEmptyOptional(raceID);
-		throwIfNotPlanned(race, "Error race in state " + race.getState());		
+		throwIfNotPlanned(race, INVALID_STATE);		
 		return race;
 	}
 
 	public Race getFinishedRace(int raceID) {	
 		Race race = getOrThrowOnEmptyOptional(raceID);
-		throwIfNotFinished(race, "Error race in state " + race.getState());
+		throwIfNotFinished(race, INVALID_STATE);
 		return race;
 	}
 	
@@ -146,8 +139,4 @@ public class AdministratorService {
 	public List<Race> getPlannedRaces() {	
 		return daoFactory.getRaceDAO().getPlannedRaces();
 	}
-	
-//	public List<Race> getRacesWithoutCoefficients() {	
-//		return daoFactory.getRaceDAO().getRacesWithoutCoefficients();
-//	}
 }

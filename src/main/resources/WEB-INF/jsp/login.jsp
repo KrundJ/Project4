@@ -42,9 +42,9 @@
 					</td>
 					<td align="center">
 						<input type="password" name="password"/>
-						<c:if test="${not empty errors}">
+						<c:if test="${not empty errors['loginPasswordDontMatch']}">
 							<br>
-							<span><fmt:message key="jsp.login.error"/></span>
+							<span><fmt:message key="${loginPasswordDontMatch}"/></span>
 						</c:if>
 					</td>
 				</tr>
