@@ -17,6 +17,8 @@
 <body>
 	<div class="container">
 		<div class="content">
+			<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
+			
 			<h2><fmt:message key="jsp.bookmaker.title"/></h2>
 			
 			<table border="1" class="tableCenter">

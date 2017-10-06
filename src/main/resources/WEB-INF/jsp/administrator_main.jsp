@@ -19,6 +19,8 @@
 <body>	
 	<div class="container">
 		<div class="content">
+			<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
+			
 			<h2><fmt:message key="jsp.admin.title"/></h2>
 			<h4>
 				<a href="/app/administrator/new">

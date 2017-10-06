@@ -1,13 +1,12 @@
 package ua.training.project4.controller.commands;
 
 import java.util.Map;
-import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.AuthFilter;
-import ua.training.project4.view.Constants;
+import static ua.training.project4.view.Constants.*;
 
 public class Logout extends Command {
 
@@ -29,6 +28,6 @@ public class Logout extends Command {
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		
 		req.getSession().setAttribute(AuthFilter.ROLE_ATTR, null);
-		req.setAttribute(Constants.MESSAGE, "You have been logged out successfully");		
+		req.setAttribute(MESSAGE, LOGOUT_MSG);		
 	}
 }

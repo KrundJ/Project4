@@ -27,7 +27,7 @@
 			
 			<c:choose>
 				<c:when test="${not empty messageToFormat}">
-					<fmt:message key="${messageToFormat}"/>	<c:out value="${message}"></c:out> <%=Currency.getInstance(loc).getSymbol()%>	
+					 <fmt:message key="${messageToFormat}"/>  <c:out value="${message}"></c:out> <%=Currency.getInstance(loc).getSymbol()%> 	
 				</c:when>
 				<c:otherwise>
 					<fmt:message key="${message}"/>

@@ -16,6 +16,7 @@
 </head>
 <body>
 	<div class="content">
+		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		<h1><fmt:message key="jsp.betSuccessful.title"/></h1>
 		
 		<h4><fmt:message key="jsp.betParameters.ID"/> <c:out value="${bet.ID}"></c:out></h4>	

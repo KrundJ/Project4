@@ -22,8 +22,8 @@ public class SetLocale extends Command {
 					loc = Locale.US;
 					break;
 				}
-				case "ru": {
-					loc = Locale.forLanguageTag("ru-RU");
+				case "ua": {
+					loc = Locale.forLanguageTag("uk-UA");
 					break;
 				}
 				default: {

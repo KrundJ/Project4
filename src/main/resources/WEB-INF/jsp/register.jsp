@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div class="content">
-	
+		
 		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		
 		<div class="formDiv">

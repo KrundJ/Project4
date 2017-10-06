@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div class="content">
-		
+		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		<h1><fmt:message key="jsp.coefficientsEditor.title"/></h1>
 		
 		<form accept-charset="UTF-8" action="/app/bookmaker/edit" method="post" enctype="application/x-www-form-urlencoded">

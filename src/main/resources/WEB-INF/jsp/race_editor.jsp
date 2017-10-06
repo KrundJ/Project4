@@ -19,7 +19,7 @@
 <body>
 
 	<div class="content">
-	
+		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		<c:choose>
 			<c:when test="${requestScope['javax.servlet.forward.request_uri'] eq '/app/administrator/new'}">
 				<h1><fmt:message key="jsp.raceEditor.new.title"/></h1>
@@ -82,7 +82,7 @@
 								<c:set var="datePattern" value="Jan 23, 1996"></c:set>
 							</c:when>
 							<c:otherwise>
-								<c:set var="datePattern" value="23.01.1996"></c:set>
+								<c:set var="datePattern" value="23 січ.1996"></c:set>
 							</c:otherwise>
 						</c:choose>
 						<input type="text" value="<fmt:formatDate value="${date}" dateStyle="MEDIUM"/>" name="date" placeholder="${datePattern}" size="9" /> 

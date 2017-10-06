@@ -45,7 +45,10 @@ public final class Constants {
 	public static final String REGISTRATION_MAIN_ERROR = "userExisits";
 	
 	public static final String MESSAGE_TO_FORMAT = "messageToFormat";
+
 	//MESSAGES
+	public static final String LOGOUT_MSG = "jsp.logout.message";
+	
 	public static final String LOGIN_ERROR_MSG = "service.error.auth.loginPasswordDontMatch";
 	
 	public static final String REGISTRATION_ERROR_MSG = "service.error.auth.userExisits";
