@@ -3,8 +3,11 @@ package ua.training.project4;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import lombok.Getter;
 import ua.training.project4.model.dao.DAOFactory;
 
+@Getter
 public class Config {
 
     private String url;
@@ -12,6 +15,7 @@ public class Config {
     private String pass;
     private String factoryClassName;
     private int poolSize;
+    private boolean testing;
 
     private static Config INSTANCE = null;
     
@@ -28,6 +32,7 @@ public class Config {
             url = properties.getProperty("db.url");
             factoryClassName = properties.getProperty("db.factoryClassName");
             poolSize = Integer.parseInt(properties.getProperty("db.poolSize"));
+            testing = Boolean.parseBoolean(properties.getProperty("testing"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,25 +45,5 @@ public class Config {
     	}
     	return INSTANCE;
     }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public String getFactoryClassName() {
-        return factoryClassName;
-    }
-
-	public int getPoolSize() {
-		return poolSize;
-	}
 }
 

@@ -46,7 +46,7 @@ public abstract class Command {
 				int raceID = Integer.parseInt(req.getParameter(RACE_ID));
 				validValues.put(RACE_ID, raceID);
 			} catch (Exception e) {
-				throw new RuntimeException("validation.error.raceID");
+				throw new RuntimeException(VALIDATION_ERR_RACE_ID);
 			}
 			return this;
 		}
@@ -56,7 +56,7 @@ public abstract class Command {
 				int betID = Integer.parseInt(req.getParameter(BET_ID));
 				validValues.put(BET_ID, betID);
 			} catch (Exception e) {
-				throw new RuntimeException("validation.error.betID");
+				throw new RuntimeException(VALIDATION_ERR_BET_ID);
 			}
 			return this;
 		}
@@ -67,7 +67,7 @@ public abstract class Command {
 				validValues.put(DISTANCE, distance);
 			} catch (Exception e) {
 				System.err.println("Invalid distance");
-				errorMessages.put(DISTANCE, "Invalid value"); 
+				errorMessages.put(DISTANCE, VALIDATION_ERR_DISTANCE); 
 			}
 			return this;
 		}
@@ -81,7 +81,7 @@ public abstract class Command {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.err.println("Invalid date");
-				errorMessages.put(DATE, "validation.error.distance"); 
+				errorMessages.put(DATE, VALIDATION_ERR_DATE); 
 			}
 			return this;
 		}
@@ -97,7 +97,7 @@ public abstract class Command {
 				validValues.put(RACE_RESULTS, raceResultsMap);
 			} catch (Exception e) {
 				System.err.println("Invalid race results");
-				errorMessages.put(RACE_RESULTS, "validation.error.raceResults"); 
+				errorMessages.put(RACE_RESULTS, VALIDATION_ERR_RACE_RESULTS); 
 			}
 			return this;
 		}
@@ -112,7 +112,7 @@ public abstract class Command {
 				validValues.put(HORSE_NAMES, horseNames);
 			} catch (Exception e) {
 				System.err.println("Invalid horses");
-				errorMessages.put(HORSE_NAMES, "validation.error.horseNames"); 
+				errorMessages.put(HORSE_NAMES, VALIDATION_ERR_HORSE_NAMES); 
 			}
 			return this;
 		}
@@ -124,7 +124,7 @@ public abstract class Command {
 				validValues.put(HORSE_NAME, horseName);
 			} catch (Exception e) {
 				System.err.println("Invalid horse name");
-				errorMessages.put(HORSE_NAME, "validation.error.horseName"); 
+				errorMessages.put(HORSE_NAME, VALIDATION_ERR_HORSE_NAME); 
 			}
 			return this;
 		}
@@ -136,7 +136,7 @@ public abstract class Command {
 				validValues.put(BET_AMOUNT, amount);
 			} catch (Exception e) {
 				System.err.println("Invalid amount");
-				errorMessages.put(BET_AMOUNT, "validation.error.amount"); 
+				errorMessages.put(BET_AMOUNT, VALIDATION_ERR_AMOUNT); 
 			}
 			return this;
 		}
@@ -147,7 +147,7 @@ public abstract class Command {
 				validValues.put(BET_TYPE, betType);
 			} catch (Exception e) {
 				System.err.println("Invalid bet type");
-				errorMessages.put(BET_TYPE, "validation.error.betType"); 
+				errorMessages.put(BET_TYPE, VALIDATION_ERR_BET_TYPE); 
 			}
 			return this;
 		}
@@ -168,7 +168,7 @@ public abstract class Command {
 				validValues.put(COEFFICIENTS, coefficients);
 			} catch (Exception e) {
 				System.err.println("Invalid coefficients");
-				errorMessages.put(COEFFICIENTS, "validation.error.coefficients"); 
+				errorMessages.put(COEFFICIENTS, VALIDATION_ERR_COEFFICIENTS); 
 			}
 			return this;
 		}
@@ -180,7 +180,7 @@ public abstract class Command {
 				validValues.put(LOGIN, login);
 			} catch (Exception e) {
 				System.err.println("Invalid login");
-				errorMessages.put(LOGIN, "validation.error.login"); 
+				errorMessages.put(LOGIN, VALIDATION_ERR_LOGIN); 
 			}
 			return this;
 		}
@@ -192,7 +192,7 @@ public abstract class Command {
 				validValues.put(PASSWORD, password);
 			} catch (Exception e) {
 				System.err.println("Invalid password");
-				errorMessages.put(PASSWORD, "validation.error.password"); 
+				errorMessages.put(PASSWORD, VALIDATION_ERR_PASSWORD); 
 			}
 			return this;
 		}

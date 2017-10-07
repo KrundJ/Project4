@@ -17,7 +17,8 @@
 <body>
 	<div class="content">
 		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
-		
+		<br>
+		<br>
 		<form accept-charset="UTF-8" action="/app/winnings" method="post" enctype="application/x-www-form-urlencoded">
 			<table border="1" class="tableCenter">
 				<tr>

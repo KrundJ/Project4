@@ -26,10 +26,11 @@
 		<div class="messageDiv">
 			
 			<c:choose>
-				<c:when test="${not empty messageToFormat}">
-					 <fmt:message key="${messageToFormat}"/>  <c:out value="${message}"></c:out> <%=Currency.getInstance(loc).getSymbol()%> 	
+				<c:when test="${message.getClass().simpleName eq 'Winnings'}">
+					 <fmt:message key="${message.message}"/>  <c:out value="${message.amount}"></c:out> <c:if test="${not empty message.amount}"><%=Currency.getInstance(loc).getSymbol()%></c:if>  	
 				</c:when>
 				<c:otherwise>
+					otherwise
 					<fmt:message key="${message}"/>
 				</c:otherwise>
 			</c:choose>

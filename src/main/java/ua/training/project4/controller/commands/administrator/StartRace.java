@@ -1,17 +1,20 @@
 package ua.training.project4.controller.commands.administrator;
 
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ua.training.project4.controller.commands.Command;
 import ua.training.project4.model.service.AdministratorService;
+import ua.training.project4.model.service.ServiceFactory;
+
 import static ua.training.project4.view.Constants.*;
 
 public class StartRace extends Command {
 	
-	AdministratorService administratorService = AdministratorService.getInstance();
+	AdministratorService administratorService = ServiceFactory.getInstance().getAdministratorService();
 
 	public StartRace(String successPage) {
 		super(successPage);

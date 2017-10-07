@@ -8,6 +8,9 @@ import ua.training.project4.model.dao.DAOFactory;
 import ua.training.project4.model.entities.Bet;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Race;
+import ua.training.project4.model.entities.Winnings;
+
+import static org.mockito.Mockito.reset;
 import static ua.training.project4.view.Constants.*;
 
 public class UserService {
@@ -63,15 +66,15 @@ public class UserService {
 					* horseCoefficient); 
 	}
 	
-	public int calculateWinnings(int betID) throws Exception {
+	public Winnings calculateWinnings(int betID) {
 		Bet bet = getOrThrowOnEmptyOptional(
 				daoFactory.getBetDAO().getBetByID(betID));
 		Race race = factory.getAdministratorService().getFinishedRace(bet.getRaceID());
 		
 		if (! isWin(bet, race)) 
-			throw new RuntimeException(BET_NOT_WIN);
+			return Winnings.builder().message(BET_NOT_WIN).build();
 		if (bet.isWinningsReceived())
-			throw new RuntimeException(WINNINGS_RECEIVED);
+			return Winnings.builder().message(WINNINGS_RECEIVED).build();
 		Coefficients coefficients = factory.getBookmakerService().getCoefficients(bet.getRaceID());
 			
 		double horseCoefficient = coefficients.getValues()
@@ -79,7 +82,6 @@ public class UserService {
 						.filter(h -> h.getName().equals(bet.getHorseName()))
 						.findFirst().get());
 		int amount = billBet(bet, horseCoefficient);
-		//return String.format(WINNINGS_MESSAGE, amount);
-		return amount;
+		return Winnings.builder().amount(amount).message("").build();
 	}
 }

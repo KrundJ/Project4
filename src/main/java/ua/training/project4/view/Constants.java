@@ -30,7 +30,7 @@ public final class Constants {
 	
 	public static final String BET_ID = "betID";
 	
-	public static final String BET_AMOUNT = "betAmount";
+	public static final String BET_AMOUNT = "amount";
 	
 	public static final String BET_TYPE = "betType";
 	
@@ -44,8 +44,33 @@ public final class Constants {
 	
 	public static final String REGISTRATION_MAIN_ERROR = "userExisits";
 	
-	public static final String MESSAGE_TO_FORMAT = "messageToFormat";
-
+//	public static final String MESSAGE_TO_FORMAT = "messageToFormat";
+	//VALIDATION
+	public static final String VALIDATION_ERR_RACE_ID = "validation.error.raceID";
+	
+	public static final String VALIDATION_ERR_BET_ID = "validation.error.betID";
+	
+	public static final String VALIDATION_ERR_DISTANCE = "validation.error.distance";
+	
+	public static final String VALIDATION_ERR_DATE = "validation.error.date";
+	
+	public static final String VALIDATION_ERR_RACE_RESULTS = "validation.error.raceResults";
+	
+	public static final String VALIDATION_ERR_HORSE_NAMES = "validation.error.horseNames";
+	
+	public static final String VALIDATION_ERR_HORSE_NAME = "validation.error.horseName";
+	
+	public static final String VALIDATION_ERR_AMOUNT = "validation.error.amount";
+	
+	public static final String VALIDATION_ERR_BET_TYPE = "validation.error.betType";
+	
+	public static final String VALIDATION_ERR_COEFFICIENTS = "validation.error.coefficients";
+	
+	public static final String VALIDATION_ERR_LOGIN = "validation.error.login";
+	
+	public static final String VALIDATION_ERR_PASSWORD = "validation.error.password";
+	
+	
 	//MESSAGES
 	public static final String LOGOUT_MSG = "jsp.logout.message";
 	

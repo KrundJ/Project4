@@ -1,6 +1,10 @@
 package ua.training.project4.model.service;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.Objects;
+
+import ua.training.project4.Config;
 
 /*
  * This required, otherwise stack overflow error because
@@ -10,6 +14,10 @@ public class ServiceFactory {
 	
 	private static ServiceFactory instance;
 	
+	private AdministratorService administratorMock = mock(AdministratorService.class);
+
+	private HorseService horseMock = mock(HorseService.class);
+		
 	private ServiceFactory() {}
 			
 	public static ServiceFactory getInstance() {
@@ -20,6 +28,8 @@ public class ServiceFactory {
 	}
 	
 	public AdministratorService getAdministratorService() {
+		if (Config.getInstance().isTesting())
+			return administratorMock;
 		return AdministratorService.getInstance();
 	}
 	
@@ -28,6 +38,8 @@ public class ServiceFactory {
 	}
 	
 	public HorseService getHorseService() {
+		if (Config.getInstance().isTesting())
+			return horseMock;
 		return HorseService.getInstance();
 	}
 	

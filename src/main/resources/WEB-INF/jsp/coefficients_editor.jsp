@@ -38,7 +38,7 @@
 				<c:if test="${not empty errors['coefficients']}">
 					<tr>
 						<td colspan="2">
-							<span><c:out value="${errors['coefficients']}"></c:out></span>
+							<span><fmt:message key="${errors['coefficients']}"/></span>
 						</td>
 					</tr>
 				</c:if>		

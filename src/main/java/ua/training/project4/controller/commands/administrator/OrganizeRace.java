@@ -13,12 +13,14 @@ import ua.training.project4.model.entities.Race.RaceDistance;
 import ua.training.project4.model.entities.Race.RaceState;
 import ua.training.project4.model.service.AdministratorService;
 import ua.training.project4.model.service.HorseService;
+import ua.training.project4.model.service.ServiceFactory;
+
 import static ua.training.project4.view.Constants.*;
 
 public class OrganizeRace extends Command {
 	
-	AdministratorService administratorService = AdministratorService.getInstance();
-	HorseService horseService = HorseService.getInstance();
+	AdministratorService administratorService = ServiceFactory.getInstance().getAdministratorService();
+	HorseService horseService = ServiceFactory.getInstance().getHorseService();
 	
 	public OrganizeRace(String successPage, String failPage) {
 		super(successPage, failPage);

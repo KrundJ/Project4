@@ -37,7 +37,7 @@
 						</select>
 						<c:if test="${not empty errors['horseName']}">
 							<br>
-							<span><c:out value="${errors['horseName']}"></c:out></span>
+							<span><fmt:message key="${errors['horseName']}" /></span>
 						</c:if>
 					</td>
 				</tr>
@@ -49,7 +49,7 @@
 						
 						<c:if test="${not empty errors['betType']}">
 							<br>
-							<span><c:out value="${errors['betType']}"></c:out></span>
+							<span><fmt:message key="${errors['betType']}" /></span>
 						</c:if>
 					</td>
 				</tr>
@@ -58,10 +58,10 @@
 						<b><fmt:message key="jsp.betParameters.amount"/></b>
 					</td>
 					<td>
-						<input type="text" name="betAmount" size="10"/>
+						<input type="text" name="amount" size="10"/>
 						<c:if test="${not empty errors['amount']}">
 							<br>
-							<span><c:out value="${errors['amount']}"></c:out></span>
+							<span><fmt:message key="${errors['amount']}" /></span>
 						</c:if>
 					</td>
 				</tr>

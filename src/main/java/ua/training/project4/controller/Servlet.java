@@ -117,14 +117,14 @@ public class Servlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
+	public void doPost(HttpServletRequest req, HttpServletResponse resp) 
 					throws ServletException, IOException {
 		System.out.println("received POST");
 		findCommandAndExecute(req, resp);
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) 
 					throws ServletException, IOException {
 		System.out.println("received GET");
 		findCommandAndExecute(req, resp);

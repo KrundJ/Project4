@@ -16,8 +16,9 @@
 </head>
 <body>
 	<div class="container">
-		<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
 		<div class="content">
+			<a href="/" style="font-weight: 600"><fmt:message key="jsp.link.main"/></a>
+			
 			<h2><fmt:message key="jsp.main.title"/></h2>
 			<h4>
 				<a href="/app/winnings">

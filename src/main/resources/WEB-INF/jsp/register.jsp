@@ -36,7 +36,7 @@
 						<input type="text" name="login"/>
 						<c:if test="${not empty errors['login']}">
 							<br>
-							<span><c:out value="${errors['login']}"></c:out></span>
+							<span><fmt:message key="${errors['login']}"/></span>
 						</c:if>
 					</td>
 				</tr>
@@ -48,7 +48,7 @@
 						<input type="password" name="password"/>
 						<c:if test="${not empty errors['password']}">
 							<br>
-							<span><c:out value="${errors['password']}"></c:out></span>
+							<span><fmt:message key="${errors['password']}"/></span>
 						</c:if>
 						<c:if test="${not empty errors['userExisits']}">
 							<br>

@@ -26,12 +26,7 @@ public class WinningsMessage extends Command {
 	protected void peformAction(HttpServletRequest req, 
 			HttpServletResponse resp, Map<String, Object> validValues) {
 		int betID = (int) validValues.get(BET_ID);
-		try {
-			req.setAttribute(MESSAGE, new Integer(userService.calculateWinnings(betID)).toString());
-			req.setAttribute(MESSAGE_TO_FORMAT, WINNINGS_MESSAGE);
-		} catch (Exception e) {
-			req.setAttribute(MESSAGE, e.getMessage());
-		}
+		req.setAttribute(MESSAGE, userService.calculateWinnings(betID));
 		//Forward to message page
 	}
 }
