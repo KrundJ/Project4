@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,15 +14,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
-import ua.training.project4.model.dao.DAOFactory;
 import ua.training.project4.model.dao.RaceDAO;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Race.RaceDistance;
 import ua.training.project4.model.entities.Race.RaceState;
 
+import static ua.training.project4.view.Constants.*;
+
 public class RaceDAOImpl implements RaceDAO {
+	
+	private static Logger log = Logger.getLogger(RaceDAOImpl.class.getName());
 	
 	private BasicDataSource connectionPool;
 		
@@ -61,15 +64,6 @@ public class RaceDAOImpl implements RaceDAO {
             + "ON horses.h_jockey = jockeys.j_id "
 			+ "WHERE races.r_state = '%s' "
 			+ "ORDER BY races.r_id";
-	
-//	private static final String GET_RACES_WITHOUT_COEFF = "SELECT horses.h_name, horses.h_number, horses_races.h_place, "
-//			+ "races.r_id, races.r_distance, races.r_state, races.r_date, jockeys.j_name "   
-//			+ "FROM horses JOIN horses_races "     
-//			+ "ON horses.h_name = horses_races.h_name LEFT JOIN races "             
-//			+ "ON horses_races.r_id = races.r_id LEFT JOIN jockeys "    
-//            + "ON horses.h_jockey = jockeys.j_id "
-//			+ "WHERE horses_races.h_coefficient IS NULL "
-//			+ "ORDER BY races.r_id";
 	
 	private static final String UPDATE_RACE = "UPDATE races JOIN horses_races "
 			+ "ON races.r_id = horses_races.r_id  "
@@ -115,10 +109,9 @@ public class RaceDAOImpl implements RaceDAO {
 				horse = HorseDAOImpl.extractHorseFromResultSet(rs);
 				race.getRaceResults().put(horse, rs.getInt(PLACE_FIELD));
 			}
-		} catch (SQLException ex){
-	       	ex.printStackTrace();
-	       	//LOG
-	       	throw new RuntimeException();
+		} catch (Exception e) {
+			log.info(e);
+			throw new RuntimeException(LIST_RACE_ERR);
 	    }
 		return races;
 	}
@@ -139,11 +132,6 @@ public class RaceDAOImpl implements RaceDAO {
 		return getListOfRaces(
 				String.format(GET_RACES_WITH_STATE, RaceState.PLANNED.name()));
 	}
-	
-//	@Override
-//	public List<Race> getRacesWithoutCoefficients() {
-//		return getListOfRaces(GET_RACES_WITHOUT_COEFF);
-//	}
 
 	@Override
 	public void create(Race item) {
@@ -168,10 +156,9 @@ public class RaceDAOImpl implements RaceDAO {
 			}
 			hr_st.executeBatch();
 			conn.commit();
-        } catch (Exception ex){
-        	ex.printStackTrace();
-        	//LOG
-        	throw new RuntimeException();
+        } catch (Exception e) {
+        	log.info(e);
+        	throw new RuntimeException(CREATE_RACE_ERR);
         }		
 	}
 	
@@ -194,10 +181,9 @@ public class RaceDAOImpl implements RaceDAO {
 			}
 			st.executeBatch();
 			conn.commit();
-        } catch (Exception ex){
-        	ex.printStackTrace();
-        	//LOG
-        	throw new RuntimeException();
+        } catch (Exception e){
+        	log.info(e);
+        	throw new RuntimeException(UPDATE_RACE_ERR);
         } 
 	}
 
@@ -207,10 +193,9 @@ public class RaceDAOImpl implements RaceDAO {
 			PreparedStatement st = conn.prepareStatement(DELETE_RACE);
 			st.setInt(1, id);
 			st.executeUpdate();			
-	    } catch (SQLException ex) {
-	    	ex.printStackTrace();
-	    	//LOG
-	    	throw new RuntimeException();
+	    } catch (Exception e) {
+	    	log.info(e);
+	    	throw new RuntimeException(DELETE_RACE_ERR);
 	    }
 	}
 
@@ -232,9 +217,8 @@ public class RaceDAOImpl implements RaceDAO {
 	            raceResults.put(horse, rs.getInt(PLACE_FIELD));
 			}
 			race.get().setRaceResults(raceResults);
-        } catch (Exception ex){
-        	//LOG
-        	//throw new RuntimeException();
+        } catch (Exception e){
+        	log.info(e);
         }
 		return race;
 	}

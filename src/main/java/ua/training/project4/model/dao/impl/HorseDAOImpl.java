@@ -4,17 +4,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
 import ua.training.project4.model.dao.HorseDAO;
 import ua.training.project4.model.entities.Horse;
 
+import static ua.training.project4.view.Constants.*;
+
 public class HorseDAOImpl implements HorseDAO {
+	
+	private static Logger log = Logger.getLogger(HorseDAOImpl.class.getName());
 	
 	private BasicDataSource connectionPool;
 			
@@ -51,10 +54,9 @@ public class HorseDAOImpl implements HorseDAO {
             while(rs.next()){
 	            horses.add(extractHorseFromResultSet(rs));
             }
-        } catch (SQLException ex){
-        	ex.printStackTrace();
-        	//LOG
-        	throw new RuntimeException();
+        } catch (Exception e) {
+        	log.info(e);
+        	throw new RuntimeException(HORSES_GET_ERR);
         }
 		return horses;
 	}

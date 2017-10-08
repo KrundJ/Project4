@@ -43,7 +43,7 @@ public class MakeBet extends Command {
 				.betType((BetType) validValues.get(BET_TYPE))
 				.horseName((String) validValues.get(HORSE_NAME)).build()
 		);
-		req.setAttribute("bet", bet);
+		req.setAttribute(BET, bet);
 		//Forward to message page
 	}
 }

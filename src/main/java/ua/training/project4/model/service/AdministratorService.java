@@ -7,7 +7,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 import ua.training.project4.model.dao.DAOFactory;
+import ua.training.project4.model.dao.impl.BetDAOImpl;
 import ua.training.project4.model.entities.Coefficients;
 import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
@@ -17,6 +20,8 @@ import static ua.training.project4.view.Constants.*;
 public class AdministratorService {
 
 	private ServiceFactory factory = ServiceFactory.getInstance();
+	
+	private static Logger log = Logger.getLogger(AdministratorService.class.getName());
 	
 	private static AdministratorService instance;
 	
@@ -36,6 +41,7 @@ public class AdministratorService {
 	private Race getOrThrowOnEmptyOptional(int raceID) {
 		Optional<Race> raceOptional = daoFactory.getRaceDAO().getRaceByID(raceID);
 		if (! raceOptional.isPresent()) {
+			log.info("race with ID " + raceID + " not found");
 			throw new ServiceException(RACE_NOT_FOUND, new Integer(raceID).toString());
 		}
 		return raceOptional.get();
@@ -43,18 +49,21 @@ public class AdministratorService {
 	
 	private void throwIfNotPlanned(Race race, String message) {
 		if (! race.getState().equals(RaceState.PLANNED)) {
+			log.info("race with ID " + race.getID() + " is not planned");
 			throw new ServiceException(message, race.getState().name());
 		}		
 	}
 	
 	private void throwIfNotStarted(Race race, String message) {
 		if (! race.getState().equals(RaceState.STARTED)) {
+			log.info("race with ID " + race.getID() + " is not started");
 			throw new ServiceException(message, race.getState().name());
 		}		
 	}
 	
 	private void throwIfNotFinished(Race race, String message) {
 		if (! race.getState().equals(RaceState.FINISHED)) {
+			log.info("race with ID " + race.getID() + " is not finished");
 			throw new ServiceException(message, race.getState().name());
 		}		
 	}
@@ -74,6 +83,7 @@ public class AdministratorService {
 		throwIfNotPlanned(race, START_ERROR);
 		Coefficients coef = factory.getBookmakerService().getCoefficients(raceID);
 		if (coef.getValues().containsValue(0.0)) {
+			log.info("Coefficients not set for race with ID " + raceID);
 			throw new RuntimeException(NO_COEFFICIENTS); 
 		}
 		race.setState(RaceState.STARTED);
@@ -97,6 +107,8 @@ public class AdministratorService {
 		Set<Horse> horsesInResults = factory.getHorseService().getHorsesByNames(
 				raceResults.values().stream().toArray(String[]::new));
 		if (! race.getRaceResults().keySet().containsAll(horsesInResults)) {
+			log.info("race with ID " + race.getID() + " doesn't contains horses from raceResults");
+			log.info(raceResults);
 			throw new RuntimeException(HORSE_NOT_IN_RACE);
 		}
 		

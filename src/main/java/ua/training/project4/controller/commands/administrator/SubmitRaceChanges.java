@@ -53,9 +53,7 @@ public class SubmitRaceChanges extends Command {
 				.date((Date) validValues.get(DATE))
 				.distance((RaceDistance) validValues.get(DISTANCE))
 				.state(RaceState.PLANNED).build();
-		System.out.println(race);
 		administratorService.saveRaceChanges(race);
-		System.out.println("UPDATE RACE!!!!!");
 		//Set status code for redirect
 		resp.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
 	}

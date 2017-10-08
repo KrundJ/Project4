@@ -30,7 +30,6 @@ public class LocaleFilter implements Filter {
 			
 			((HttpServletRequest) req).getSession().setAttribute(LOCALE, DEFAULT_LOCALE);	
 		}
-		System.out.println("Locale");
 		chain.doFilter(req, resp);
 	}
 

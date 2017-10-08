@@ -28,6 +28,8 @@ public final class Constants {
 	
 	public static final String COEFFICIENTS = "coefficients";
 	
+	public static final String BET = "bet";
+	
 	public static final String BET_ID = "betID";
 	
 	public static final String BET_AMOUNT = "amount";
@@ -44,7 +46,6 @@ public final class Constants {
 	
 	public static final String REGISTRATION_MAIN_ERROR = "userExisits";
 	
-//	public static final String MESSAGE_TO_FORMAT = "messageToFormat";
 	//VALIDATION
 	public static final String VALIDATION_ERR_RACE_ID = "validation.error.raceID";
 	
@@ -69,8 +70,7 @@ public final class Constants {
 	public static final String VALIDATION_ERR_LOGIN = "validation.error.login";
 	
 	public static final String VALIDATION_ERR_PASSWORD = "validation.error.password";
-	
-	
+		
 	//MESSAGES
 	public static final String LOGOUT_MSG = "jsp.logout.message";
 	
@@ -103,6 +103,27 @@ public final class Constants {
 	public static final String WINNINGS_RECEIVED = "service.error.user.winningsReceived";
 	
 	public static final String WINNINGS_MESSAGE = "service.error.user.winningsMessage";
+	
+	//DAO
+	public static final String CREATE_BET_ERR = "dao.errors.createBet";
+	
+	public static final String UPDATE_BET_ERR = "dao.errors.updateBet";
+	
+	public static final String LIST_RACE_ERR = "dao.errors.listRace";
+	
+	public static final String CREATE_RACE_ERR = "dao.errors.createRace";
+	
+	public static final String UPDATE_RACE_ERR = "dao.errors.updateRace";
+	
+	public static final String DELETE_RACE_ERR = "dao.errors.deleteRace";
+	
+	public static final String CREATE_USER_ERR = "dao.errors.createUser";
+	
+	public static final String COEFFICIENTS_GET_ERR = "dao.errors.listCoefficients";
+	
+	public static final String COEFFICIENTS_SET_ERR = "dao.errors.setCoefficients";
+	
+	public static final String HORSES_GET_ERR = "dao.errors.listHorses";
 	
 	private Constants() {}
 }

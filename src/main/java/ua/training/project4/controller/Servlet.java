@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import ua.training.project4.controller.commands.administrator.DeleteRace;
 import ua.training.project4.controller.commands.administrator.FinishRace;
 import ua.training.project4.controller.commands.administrator.OrganizeRace;
@@ -43,7 +45,7 @@ public class Servlet extends HttpServlet {
 	private Map<String, Command> commands = new HashMap<>();
 	
 	private static final Pattern actionPattern = Pattern.compile("^/app(/[a-z/\\d]+)/?$");
-	
+
 	@Override
 	public void init(){
 		commands.put("POST:/locale", 
@@ -119,14 +121,12 @@ public class Servlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) 
 					throws ServletException, IOException {
-		System.out.println("received POST");
 		findCommandAndExecute(req, resp);
 	}
 	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) 
 					throws ServletException, IOException {
-		System.out.println("received GET");
 		findCommandAndExecute(req, resp);
 	}
 }

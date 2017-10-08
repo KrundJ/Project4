@@ -1,7 +1,6 @@
 package ua.training.project4.model.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,12 +8,17 @@ import java.sql.Statement;
 import java.util.Optional;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
 import ua.training.project4.model.dao.BetDAO;
 import ua.training.project4.model.entities.Bet;
 import ua.training.project4.model.entities.Bet.BetType;
 
+import static ua.training.project4.view.Constants.*;
+
 public class BetDAOImpl implements BetDAO {
+	
+	private static Logger log = Logger.getLogger(BetDAOImpl.class.getName());
 	
 	private BasicDataSource connectionPool;
 	
@@ -70,9 +74,8 @@ public class BetDAOImpl implements BetDAO {
             }
 			resultBet = Optional.of(bet);
 		} catch (Exception e) {
-			e.printStackTrace();
-			//LOG
-			throw new RuntimeException();
+			log.info(e);
+			throw new RuntimeException(CREATE_BET_ERR);
 		}
 		return resultBet;
 	}
@@ -88,9 +91,7 @@ public class BetDAOImpl implements BetDAO {
                bet = Optional.of(exractBetFromResultSet(rs));
             }
 		} catch (Exception e) {
-			e.printStackTrace();
-			//LOGs
-			throw new RuntimeException();
+			log.info(e);
 		}
 		return bet;
 	}
@@ -107,9 +108,8 @@ public class BetDAOImpl implements BetDAO {
 			ps.setInt(6, bet.getID());
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
-			//LOGs
-			throw new RuntimeException();
+			log.info(e);
+			throw new RuntimeException(UPDATE_BET_ERR);
 		}
 	}
 }

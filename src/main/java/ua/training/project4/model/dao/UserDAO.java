@@ -9,5 +9,4 @@ public interface UserDAO {
 	public void create(User item);
 	
 	public Optional<User> getByLogin(String login);
-	
 }

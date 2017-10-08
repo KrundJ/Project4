@@ -78,7 +78,6 @@ public class AuthFilter implements Filter {
 	public static final String ROLE_ATTR = "role";
 	
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		System.out.println("auth");
 		ServletResponse processedResp = auth.check(req, resp);
 		//if request response status redirect(in case of login) or forbidden(not OK) - stop filtering
 		if (((HttpServletResponse) processedResp).getStatus() != HttpServletResponse.SC_OK)

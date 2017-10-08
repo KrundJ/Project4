@@ -7,12 +7,17 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
 import ua.training.project4.model.dao.UserDAO;
 import ua.training.project4.model.entities.User;
 import ua.training.project4.model.entities.User.Role;
 
+import static ua.training.project4.view.Constants.*;
+
 public class UserDAOImpl implements UserDAO {
+	
+	private static Logger log = Logger.getLogger(UserDAOImpl.class.getName());
 		
 	private static final String ADD_USER = "INSERT INTO users (u_login, u_pass, u_role) "
 			+ "VALUES (?, ?, ?)";
@@ -45,10 +50,9 @@ public class UserDAOImpl implements UserDAO {
 			st.setString(2, item.getPassword());
 			st.setString(3, item.getRole().name());
 			st.executeUpdate();
-		} catch (SQLException ex){
-	        ex.printStackTrace();
-	        //LOG
-	        throw new RuntimeException();
+		} catch (Exception e) {
+	        log.info(e);
+	        throw new RuntimeException(CREATE_USER_ERR);
 		}
 	}
 
@@ -62,10 +66,8 @@ public class UserDAOImpl implements UserDAO {
 			if (rs.first()) {
 				user = Optional.of(extractUserFromResultSet(rs));
 			}
-		} catch (SQLException ex){
-	        ex.printStackTrace();
-	        //LOG
-	        throw new RuntimeException();
+		} catch (Exception e) {
+			log.info(e);
 		}
 		return user;
 	}

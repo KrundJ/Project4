@@ -2,11 +2,15 @@ package ua.training.project4.model.dao;
 
 import static org.mockito.Mockito.mock;
 
+import org.apache.log4j.Logger;
+
 import ua.training.project4.Config;
 
 public abstract class DAOFactory {
 	
 	private static DAOFactory factoryMock = mock(DAOFactory.class);
+	
+	private static Logger log = Logger.getLogger(DAOFactory.class.getName());
 	
 	public abstract BetDAO getBetDAO();
 	
@@ -24,8 +28,9 @@ public abstract class DAOFactory {
         try {
             factory = (DAOFactory) Class.forName(className).newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Error("DAOFactory instantinatin error");
+        	log.info("DAOFactory instantinatin error");
+            log.info(e);
+            throw new Error();
         }
         if (Config.getInstance().isTesting())
         	return factoryMock;

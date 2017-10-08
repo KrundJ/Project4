@@ -16,6 +16,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import ua.training.project4.controller.Servlet;
 import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Bet.BetType;
 import ua.training.project4.model.entities.Race.RaceDistance;
@@ -24,6 +27,8 @@ import ua.training.project4.model.service.AuthService;
 import static ua.training.project4.view.Constants.*;
 
 public abstract class Command {
+	
+	private static Logger log = Logger.getLogger(Command.class.getName());
 	
 	protected class ValidationResult {
 		
@@ -46,6 +51,8 @@ public abstract class Command {
 				int raceID = Integer.parseInt(req.getParameter(RACE_ID));
 				validValues.put(RACE_ID, raceID);
 			} catch (Exception e) {
+				log.info("Invalid raceID");
+				log.info(e);
 				throw new RuntimeException(VALIDATION_ERR_RACE_ID);
 			}
 			return this;
@@ -56,6 +63,8 @@ public abstract class Command {
 				int betID = Integer.parseInt(req.getParameter(BET_ID));
 				validValues.put(BET_ID, betID);
 			} catch (Exception e) {
+				log.info("Invalid betID");
+				log.info(e);
 				throw new RuntimeException(VALIDATION_ERR_BET_ID);
 			}
 			return this;
@@ -66,7 +75,8 @@ public abstract class Command {
 				RaceDistance distance = RaceDistance.valueOf(req.getParameter(DISTANCE));
 				validValues.put(DISTANCE, distance);
 			} catch (Exception e) {
-				System.err.println("Invalid distance");
+				log.info("Invalid distance");
+				log.info(e);
 				errorMessages.put(DISTANCE, VALIDATION_ERR_DISTANCE); 
 			}
 			return this;
@@ -79,8 +89,8 @@ public abstract class Command {
 				Date date = df.parse(req.getParameter(DATE)); 
 				validValues.put(DATE, date);
 			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.println("Invalid date");
+				log.info("Invalid date");
+				log.info(e);
 				errorMessages.put(DATE, VALIDATION_ERR_DATE); 
 			}
 			return this;
@@ -96,7 +106,8 @@ public abstract class Command {
 				if (new HashSet<>(raceResultsMap.values()).size() != Race.NUMBER_OF_HORSES_IN_RACE) throw new Exception();
 				validValues.put(RACE_RESULTS, raceResultsMap);
 			} catch (Exception e) {
-				System.err.println("Invalid race results");
+				log.info("Invalid race results");
+				log.info(e);
 				errorMessages.put(RACE_RESULTS, VALIDATION_ERR_RACE_RESULTS); 
 			}
 			return this;
@@ -111,7 +122,8 @@ public abstract class Command {
 				}
 				validValues.put(HORSE_NAMES, horseNames);
 			} catch (Exception e) {
-				System.err.println("Invalid horses");
+				log.info("Invalid horses");
+				log.info(e);
 				errorMessages.put(HORSE_NAMES, VALIDATION_ERR_HORSE_NAMES); 
 			}
 			return this;
@@ -123,7 +135,8 @@ public abstract class Command {
 				if (horseName.isEmpty()) throw new Exception();
 				validValues.put(HORSE_NAME, horseName);
 			} catch (Exception e) {
-				System.err.println("Invalid horse name");
+				log.info("Invalid horse name");
+				log.info(e);
 				errorMessages.put(HORSE_NAME, VALIDATION_ERR_HORSE_NAME); 
 			}
 			return this;
@@ -135,7 +148,8 @@ public abstract class Command {
 				if (amount <= 0) throw new Exception();
 				validValues.put(BET_AMOUNT, amount);
 			} catch (Exception e) {
-				System.err.println("Invalid amount");
+				log.info("Invalid amount");
+				log.info(e);
 				errorMessages.put(BET_AMOUNT, VALIDATION_ERR_AMOUNT); 
 			}
 			return this;
@@ -146,7 +160,8 @@ public abstract class Command {
 				BetType betType = BetType.valueOf(req.getParameter(BET_TYPE));
 				validValues.put(BET_TYPE, betType);
 			} catch (Exception e) {
-				System.err.println("Invalid bet type");
+				log.info("Invalid bet type");
+				log.info(e);
 				errorMessages.put(BET_TYPE, VALIDATION_ERR_BET_TYPE); 
 			}
 			return this;
@@ -167,7 +182,8 @@ public abstract class Command {
 				if (coefficients.size() != Race.NUMBER_OF_HORSES_IN_RACE) throw new Exception();
 				validValues.put(COEFFICIENTS, coefficients);
 			} catch (Exception e) {
-				System.err.println("Invalid coefficients");
+				log.info("Invalid coefficients");
+				log.info(e);
 				errorMessages.put(COEFFICIENTS, VALIDATION_ERR_COEFFICIENTS); 
 			}
 			return this;
@@ -176,10 +192,11 @@ public abstract class Command {
 		public ValidationResult checkLogin(HttpServletRequest req) {
 			try {
 				String login = req.getParameter(LOGIN);
-				if(! login.matches(LOGIN_PATTERN)) throw new Exception();
+				if(! login.matches(LOGIN_PATTERN)) throw new Exception(login);
 				validValues.put(LOGIN, login);
 			} catch (Exception e) {
-				System.err.println("Invalid login");
+				System.err.println();
+				log.info("Invalid login: " + e.getMessage());				
 				errorMessages.put(LOGIN, VALIDATION_ERR_LOGIN); 
 			}
 			return this;
@@ -188,10 +205,10 @@ public abstract class Command {
 		public ValidationResult checkPassword(HttpServletRequest req) {
 			try {
 				String password = req.getParameter(PASSWORD);
-				if(! password.matches(PASSWORD_PATTERN)) throw new Exception();
+				if(! password.matches(PASSWORD_PATTERN)) throw new Exception(password);
 				validValues.put(PASSWORD, password);
 			} catch (Exception e) {
-				System.err.println("Invalid password");
+				log.info("Invalid password: " + e.getMessage());
 				errorMessages.put(PASSWORD, VALIDATION_ERR_PASSWORD); 
 			}
 			return this;

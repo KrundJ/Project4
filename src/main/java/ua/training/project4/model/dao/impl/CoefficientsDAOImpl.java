@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
 import ua.training.project4.model.dao.CoefficientsDAO;
 import ua.training.project4.model.entities.Coefficients;
@@ -24,8 +25,12 @@ import ua.training.project4.model.entities.Horse;
 import ua.training.project4.model.entities.Race;
 import ua.training.project4.model.entities.Race.RaceDistance;
 import ua.training.project4.model.entities.Race.RaceState;
+
+import static ua.training.project4.view.Constants.*;
  
 public class CoefficientsDAOImpl implements CoefficientsDAO {
+	
+	private static Logger log = Logger.getLogger(CoefficientsDAOImpl.class.getName());
 	
 	private BasicDataSource connectionPool;
 	
@@ -34,12 +39,6 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			+ "ON horses.h_name = horses_races.h_name LEFT JOIN jockeys "
 			+ "ON horses.h_jockey = jockeys.j_id "
             + "WHERE horses_races.r_id = ?";
-	
-//	private static final String GET_FOR_ALL_RACES = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
-//			+ "FROM horses JOIN horses_races "     
-//			+ "ON horses.h_name = horses_races.h_name LEFT JOIN jockeys "
-//			+ "ON horses.h_jockey = jockeys.j_id "
-//			+ "ORDER BY horses_races.r_id";
 	
 	private static final String GET_FOR_RACES_WITH_STATE = "SELECT horses.h_name, horses.h_number, jockeys.j_name, horses_races.r_id,  horses_races.h_coefficient "   
 			+ "FROM horses JOIN horses_races "      
@@ -79,10 +78,8 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
             }
             coefficients.setValues(values);
             result = Optional.of(coefficients);
-        } catch (SQLException ex){
-        	ex.printStackTrace();
-        	//LOGs
-        	throw new RuntimeException();
+        } catch (Exception e){
+        	log.info(e);
         } 
 		return result;
 	}
@@ -108,18 +105,12 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 				horse = HorseDAOImpl.extractHorseFromResultSet(rs);
 				coef.getValues().put(horse, rs.getDouble(COEF_FIELD));
 			}
-        } catch (SQLException ex){
-        	ex.printStackTrace();
-        	//LOG
-        	throw new RuntimeException();
+        } catch (Exception e){
+        	log.info(e);
+        	throw new RuntimeException(COEFFICIENTS_GET_ERR);
         } 
 		return result;
 	}
-
-//	@Override
-//	public List<Coefficients> getCoefficientsForAllRaces() {
-//		return getListOfCoefficients(GET_FOR_ALL_RACES);
-//	}
 	
 	@Override
 	public List<Coefficients> getCoefficientsForCurrentRaces() {
@@ -147,10 +138,9 @@ public class CoefficientsDAOImpl implements CoefficientsDAO {
 			}
 			st.executeBatch();
 			conn.commit();
-        } catch (Exception ex){
-        	ex.printStackTrace();
-        	//LOG
-        	throw new RuntimeException();
+        } catch (Exception e){
+        	log.info(e); 
+        	throw new RuntimeException(COEFFICIENTS_SET_ERR);
         } 
 	}
 }

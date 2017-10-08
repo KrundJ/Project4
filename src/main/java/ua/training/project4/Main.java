@@ -1,5 +1,6 @@
 package ua.training.project4;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import ua.training.project4.tomcat.EmbededContextConfig;
 import ua.training.project4.tomcat.EmbededStandardJarScanner;
@@ -46,7 +48,9 @@ public class Main {
 
 		// context load WEB-INF/web.xml from classpath
 		context.addLifecycleListener(new WebXmlMountListener());
-
+		
+		DOMConfigurator.configure(new File("src/main/resources/WEB-INF/log4j.xml").toURL());
+		
 		tomcat.start();
 		tomcat.getServer().await();
 	}
